@@ -90,7 +90,7 @@ namespace Core_Mk2
         public void AddExp(int exp)
         {
             Xp += exp;
-            while (Xp >= levelBoundaries[Level])
+            while (Xp >= levelBoundaries[Level-1])
             {
                 Level++;
                 _charPoints += 4;
