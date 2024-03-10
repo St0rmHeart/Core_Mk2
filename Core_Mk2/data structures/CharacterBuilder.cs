@@ -85,7 +85,7 @@ namespace Core_Mk2
             /// <param name="bodyPart">Ячейка снаряжения</param>
             /// <param name="equipment">Устанавливаемяй объект снаряжения</param>
             /// <returns></returns>
-            public CharacterBuilder WithEquipment(EBodyPart bodyPart, Equipment equipment)
+            public CharacterBuilder With_Equipment(EBodyPart bodyPart, Equipment equipment)
             {
                 //обработчик исключений
                 if (bodyPart == EBodyPart.None) throw new ArgumentOutOfRangeException("Недопустимое использование None.");

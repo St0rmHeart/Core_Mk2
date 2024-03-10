@@ -71,6 +71,8 @@ namespace Core_Mk2
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.StartButton = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.activePlayer = new System.Windows.Forms.Label();
             this.HeroPanel.SuspendLayout();
             this.EnemyPanel.SuspendLayout();
             this.SuspendLayout();
@@ -537,7 +539,7 @@ namespace Core_Mk2
             Core_Mk2.EStoneType.WaterStone,
             Core_Mk2.EStoneType.AirStone,
             Core_Mk2.EStoneType.EarthStone});
-            this.comboBox1.Location = new System.Drawing.Point(824, 147);
+            this.comboBox1.Location = new System.Drawing.Point(835, 316);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(146, 32);
             this.comboBox1.TabIndex = 3;
@@ -545,7 +547,7 @@ namespace Core_Mk2
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Century Gothic", 15.75F);
-            this.textBox1.Location = new System.Drawing.Point(985, 147);
+            this.textBox1.Location = new System.Drawing.Point(996, 316);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(63, 33);
             this.textBox1.TabIndex = 4;
@@ -554,13 +556,34 @@ namespace Core_Mk2
             // StartButton
             // 
             this.StartButton.Font = new System.Drawing.Font("Century Gothic", 15.75F);
-            this.StartButton.Location = new System.Drawing.Point(824, 196);
+            this.StartButton.Location = new System.Drawing.Point(835, 365);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(224, 35);
             this.StartButton.TabIndex = 5;
             this.StartButton.Text = "Ход";
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
+            // 
+            // listBox1
+            // 
+            this.listBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(23)))), ((int)(((byte)(24)))));
+            this.listBox1.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listBox1.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 20;
+            this.listBox1.Location = new System.Drawing.Point(732, 406);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(456, 644);
+            this.listBox1.TabIndex = 6;
+            // 
+            // activePlayer
+            // 
+            this.activePlayer.AutoSize = true;
+            this.activePlayer.Location = new System.Drawing.Point(872, 45);
+            this.activePlayer.Name = "activePlayer";
+            this.activePlayer.Size = new System.Drawing.Size(35, 13);
+            this.activePlayer.TabIndex = 7;
+            this.activePlayer.Text = "label1";
             // 
             // Form1
             // 
@@ -569,6 +592,8 @@ namespace Core_Mk2
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::Core_Mk2.Properties.Resources.фон_1;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.Controls.Add(this.activePlayer);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.comboBox1);
@@ -630,6 +655,8 @@ namespace Core_Mk2
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button StartButton;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label activePlayer;
     }
 }
 

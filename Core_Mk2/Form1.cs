@@ -169,9 +169,101 @@ namespace Core_Mk2
                 Close();
             }
         }
+        #region Log methods
+        private void LogStepExecution(object sender, EventArgs args)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                listBox1.Items.Add(owner.GetName + " закончил ход!");
+            }
+        }
+        private void LogDeath(object sender, EventArgs args)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                listBox1.Items.Add(owner.GetName + "УМЕР!");
+            }
+        }
+        private void LogDamageEmitting(object sender, (EDamageType damageType, float value) data)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                listBox1.Items.Add(owner.GetName + " испускает " + data.value.ToString("F1") + " едениц " + data.damageType + " урона.");
+            }
+        }
+        private void LogDamageBlocking(object sender, (EDamageType damageType, float value) data)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                listBox1.Items.Add(owner.GetName + " блокирует " + data.value.ToString("F1") + " едениц " + data.damageType + " урона.");
+            }
+        }
+        private void LogDamageTaking(object sender, (EDamageType damageType, float value) data)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                listBox1.Items.Add(owner.GetName + " получает " + (-data.value).ToString("F1") + " едениц " + data.damageType + " урона.");
+            }
+        }
+        private void LogDeltaXP(object sender,  float value)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                if (value > 0 ) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " опыта ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + (-value).ToString("F1") + " опыта ");
+            }
+        }
+        private void LogDeltaHP(object sender, float value)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                if (value > 0) listBox1.Items.Add(owner.GetName + " восстанавливает " + value.ToString("F1") + " здоровья ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + (-value).ToString("F1") + " здоровья ");
+            }
+        }
+        private void LogDeltaGold(object sender, float value)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " золота ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " золота ");
+            }
+        }
+        private void LogDeltaFireMana(object sender, float value)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " маны огня ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " маны огня ");
+            }
+        }
+        private void LogDeltaWaterMana(object sender, float value)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " маны воды ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " маны воды ");
+            }
+        }
+        private void LogDeltaEarthMana(object sender, float value)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " маны земли ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " маны земли ");
+            }
+        }
+        private void LogDeltaAirMana(object sender, float value)
+        {
+            if (sender is CharacterSlot owner)
+            {
+                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " маны воздуха ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " маны воздуха ");
+            }
+        }
+        #endregion
         public Form1()
         {
-
             var characterBuilder = new Character.CharacterBuilder();
             var effectBuilder = new EffectBuilder();
 
@@ -197,7 +289,7 @@ namespace Core_Mk2
                 .With_Characteristic(ECharacteristic.Water, 5)
                 .With_Characteristic(ECharacteristic.Air, 80)
                 .With_Characteristic(ECharacteristic.Earth, 15)
-                .WithEquipment(sword.BodyPart, sword)
+                .With_Equipment(sword.BodyPart, sword)
                 .Build();
 
             characterBuilder.Reset();
@@ -216,11 +308,49 @@ namespace Core_Mk2
 
             arena = new Arena(testHero, testEnemy);
 
-            //arena.StoneCombination(EStoneType.Skull, 5);
+            #region log Init
+            //подписка логирующих методов на ивенты
+            arena._player.StepExecution += LogStepExecution;
+            arena._enemy.StepExecution += LogStepExecution;
+
+            arena._player.Death += LogDeath;
+            arena._enemy.Death += LogDeath;
+
+            arena._player.DamageEmitting += LogDamageEmitting;
+            arena._enemy.DamageEmitting += LogDamageEmitting;
+
+            arena._player.DamageBlocking += LogDamageBlocking;
+            arena._enemy.DamageBlocking += LogDamageBlocking;
+
+            arena._player.DamageTaking += LogDamageTaking;
+            arena._enemy.DamageTaking += LogDamageTaking;
+
+            arena._player.DeltaXP += LogDeltaXP;
+            arena._enemy.DeltaXP += LogDeltaXP;
+
+            arena._player.DeltaHP += LogDeltaHP;
+            arena._enemy.DeltaHP += LogDeltaHP;
+
+            arena._player.DeltaGold += LogDeltaGold;
+            arena._enemy.DeltaGold += LogDeltaGold;
+
+            arena._player.DeltaFireMana += LogDeltaFireMana;
+            arena._enemy.DeltaFireMana += LogDeltaFireMana;
+
+            arena._player.DeltaWaterMana += LogDeltaWaterMana;
+            arena._enemy.DeltaWaterMana += LogDeltaWaterMana;
+
+            arena._player.DeltaEarthMana += LogDeltaEarthMana;
+            arena._enemy.DeltaEarthMana += LogDeltaEarthMana;
+
+            arena._player.DeltaAirMana += LogDeltaAirMana;
+            arena._enemy.DeltaAirMana += LogDeltaAirMana;
+            #endregion
 
             InitializeComponent();
             KeyDown += MainForm_KeyDown;
             UpdateData();
+
             var uselessInt = 3;
         }
 
@@ -229,6 +359,7 @@ namespace Core_Mk2
             EStoneType stoneType = (EStoneType)comboBox1.SelectedItem;
             int.TryParse(textBox1.Text, out int amount) ;
             arena.StoneCombination(stoneType, amount);
+            listBox1.Items.Add("---------------------------------------------------");
             UpdateData();
         }
     }

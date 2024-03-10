@@ -276,7 +276,7 @@ namespace Core_Mk2
         public int ChangeXp(float value)
         {
             int currentLevel = Character.Level;
-            int currentMinimum = Character.levelBoundaries[currentLevel - 1];
+            int currentMinimum = Character.levelBoundaries[currentLevel - 2];
             int delta = (int)Math.Round(value);
             int oldXp = Xp;
             int newXp = oldXp + delta;
