@@ -209,7 +209,7 @@ namespace Core_Mk2
         {
             //обработчик исключений
             if (stoneType == EStoneType.None) throw new ArgumentOutOfRangeException("Недопустимое использование None.");
-            if (amount < 3 || amount > 5) throw new ArgumentOutOfRangeException("amount мне диапазона \"от 3 до 5\"");
+            if (amount < 3 || amount > 5) throw new ArgumentOutOfRangeException("amount мне диапазона от 3 до 5.");
 
             //достаём нужные коэффициенты
             var referenceCharacteristic = (ECharacteristic)(int)stoneType;
@@ -468,7 +468,7 @@ namespace Core_Mk2
         /// <param name="value">Количество урона.</param>
         public void TakeDamageNotification(EDamageType damageType, float value)
         {
-            var result = ChangeHp(value);
+            var result = ChangeHp(-value);
             DeltaHP?.Invoke(this, result);
             var data = (damageType, result);
             DamageTaking?.Invoke(this, data);

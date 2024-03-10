@@ -89,15 +89,13 @@ namespace Core_Mk2
                 if (_attacksList[_counter].damageData.isDefenderReact)
                 {
                     //запускаем ивент на получение урона у защищающегося персонажа
-                    defender.TakeDamageNotification(_attackerDamageType, -defenderReceivedDamage);
+                    defender.TakeDamageNotification(_attackerDamageType, defenderReceivedDamage);
                 }
                 else
                 {
                     ////запускаем ивент на изменение здоровья у защищающегося персонажа
                     defender.ChangeHp_WithNotification(-defenderReceivedDamage);
                 }
-
-
             }
             Reset();
         }

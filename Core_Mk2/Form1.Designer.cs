@@ -567,13 +567,13 @@ namespace Core_Mk2
             // listBox1
             // 
             this.listBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(23)))), ((int)(((byte)(24)))));
-            this.listBox1.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listBox1.Font = new System.Drawing.Font("Century Gothic", 10.75F);
             this.listBox1.ForeColor = System.Drawing.SystemColors.AppWorkspace;
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 20;
+            this.listBox1.ItemHeight = 19;
             this.listBox1.Location = new System.Drawing.Point(732, 406);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(456, 644);
+            this.listBox1.Size = new System.Drawing.Size(456, 650);
             this.listBox1.TabIndex = 6;
             // 
             // activePlayer
