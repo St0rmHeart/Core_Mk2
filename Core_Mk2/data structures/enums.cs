@@ -59,13 +59,13 @@ namespace Core_Mk2
 
     }
     /// <summary>
-    /// Указатели для адресации к владельцу некой сущности или текущему противнику сущности
+    /// Указатели для адресации к игроку или противнику игрока
     /// </summary>
     public enum EPlayerType
     {
         None = 0,
         //виды указателей
-        Self,
+        Player,
         Enemy,
     }
     /// <summary>
@@ -107,11 +107,249 @@ namespace Core_Mk2
 
         }
 
+        public static readonly Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>> derivative_Subscriptions = new Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>>()
+        { 
+            {
+                ECharacteristic.Strength, new Dictionary<EDerivative, List<ECharacteristic>>()
+                {
+                    {
+                        EDerivative.TerminationMult, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Strength
+                        } 
+                    },
 
-        public static readonly ECharacteristic[] ECHARACTERISTIC = (ECharacteristic[])Enum.GetValues(typeof(ECharacteristic));
+                    {
+                        EDerivative.AddTurnChance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Strength
+                        }
+                    },
+                    
+                    {
+                        EDerivative.Resistance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Strength
+                        }
+                    },
+                }
+            },
 
+            {
+                ECharacteristic.Endurance, new Dictionary<EDerivative, List<ECharacteristic>>()
+                {
+                    {
+                        EDerivative.TerminationMult, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Endurance
+                        }
+                    },
 
-        public static readonly Dictionary<ECharacteristic, List<EDerivative>> CHAR_DER_PAIRS = new Dictionary<ECharacteristic, List<EDerivative>>()
+                    {
+                        EDerivative.AddTurnChance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Endurance
+                        }
+                    },
+
+                    {
+                        EDerivative.MaxHealth, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Endurance
+                        }
+                    },
+
+                    {
+                        EDerivative.CurrentHealth, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Endurance
+                        }
+                    }
+                }
+            },
+
+            {
+                ECharacteristic.Dexterity, new Dictionary<EDerivative, List<ECharacteristic>>()
+                {
+                    {
+                        EDerivative.TerminationMult, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Dexterity
+                        }
+                    },
+
+                    {
+                        EDerivative.AddTurnChance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Dexterity
+                        }
+                    },
+                }
+            },
+
+            {
+                ECharacteristic.Fire, new Dictionary<EDerivative, List<ECharacteristic>>()
+                {
+                    {
+                        EDerivative.TerminationMult, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Fire
+                        }
+                    },
+
+                    {
+                        EDerivative.AddTurnChance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Fire
+                        }
+                    },
+
+                    {
+                        EDerivative.MaxMana, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Fire
+                        }
+                    },
+
+                    {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Fire
+                        }
+                    },
+
+                    {
+                        EDerivative.Resistance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Fire
+                        }
+                    },
+                }
+            },
+
+            {
+                ECharacteristic.Water, new Dictionary<EDerivative, List<ECharacteristic>>()
+                {
+                    {
+                        EDerivative.TerminationMult, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Water
+                        }
+                    },
+
+                    {
+                        EDerivative.AddTurnChance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Water
+                        }
+                    },
+
+                    {
+                        EDerivative.MaxMana, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Water
+                        }
+                    },
+
+                    {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Water
+                        }
+                    },
+
+                    {
+                        EDerivative.Resistance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Water
+                        }
+                    },
+                }
+            },
+
+            {
+                ECharacteristic.Earth, new Dictionary<EDerivative, List<ECharacteristic>>()
+                {
+                    {
+                        EDerivative.TerminationMult, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Earth
+                        }
+                    },
+
+                    {
+                        EDerivative.AddTurnChance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Earth
+                        }
+                    },
+
+                    {
+                        EDerivative.MaxMana, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Earth
+                        }
+                    },
+
+                    {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Earth
+                        }
+                    },
+
+                    {
+                        EDerivative.Resistance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Earth
+                        }
+                    },
+                }
+            },
+
+            {
+                ECharacteristic.Air, new Dictionary<EDerivative, List<ECharacteristic>>()
+                {
+                    {
+                        EDerivative.TerminationMult, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Air
+                        }
+                    },
+
+                    {
+                        EDerivative.AddTurnChance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Air
+                        }
+                    },
+
+                    {
+                        EDerivative.MaxMana, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Air
+                        }
+                    },
+
+                    {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Air
+                        }
+                    },
+
+                    {
+                        EDerivative.Resistance, new List<ECharacteristic>()
+                        {
+                            ECharacteristic.Air
+                        }
+                    },
+                }
+            },
+
+        };
+
+        public static readonly Dictionary<ECharacteristic, List<EDerivative>> char_der_pairs = new Dictionary<ECharacteristic, List<EDerivative>>()
         {
             {
                 ECharacteristic.Strength, new List<EDerivative>()
@@ -211,6 +449,7 @@ namespace Core_Mk2
     {
         None = 0,
         //Набор переменных для формулы кончеого значения производной
+        A0,
         B1,
         B2,
         C1,

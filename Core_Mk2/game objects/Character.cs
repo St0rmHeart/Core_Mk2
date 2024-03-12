@@ -74,7 +74,7 @@ namespace Core_Mk2
         {
             Name = name;
             Level = 1;
-            foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.ECHARACTERISTIC)
+            foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.char_der_pairs.Keys)
             {
                 Characteristics.Add(characteristic, 0);
             }

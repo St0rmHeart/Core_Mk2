@@ -108,7 +108,7 @@ namespace Core_Mk2
                 _name = "";
                 _xp = 0;
                 _characteristics.Clear();
-                foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.ECHARACTERISTIC)
+                foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.char_der_pairs.Keys)
                 {
                     _characteristics.Add(characteristic, 0);
                 }

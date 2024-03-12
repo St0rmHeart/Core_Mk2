@@ -273,9 +273,9 @@ namespace Core_Mk2
                 .WithDuration(5)
                 .WithTriggerThreshold(8)
                 .WithMaxStack(3)
-                .WithLink(EPlayerType.Self, ECharacteristic.Strength, EDerivative.Value, EVariable.C2)
-                .WithTriggerEvent(EPlayerType.Self, EEvent.DeltaGold)
-                .WithTickEvent(EPlayerType.Self, EEvent.StepExecution)
+                .WithLink(EPlayerType.Player, ECharacteristic.Strength, EDerivative.Value, EVariable.C2)
+                .WithTriggerEvent(EPlayerType.Player, EEvent.DeltaGold)
+                .WithTickEvent(EPlayerType.Player, EEvent.StepExecution)
                 .Build();
             sword.Effects.Add(newEffect);
 

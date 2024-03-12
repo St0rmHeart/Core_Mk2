@@ -67,7 +67,7 @@ namespace Core_Mk2
 
         #region _________________________ПОЛЯ_________________________
         //модуль для получения случайных значений
-        private Random RandomModule = new Random();
+        private readonly Random RandomModule = new Random();
 
 
         //ссылка на переключатель хода

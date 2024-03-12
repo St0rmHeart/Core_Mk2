@@ -39,7 +39,7 @@ namespace Core_Mk2
 
         private int _counterStack;
 
-        private Derivative _derivative;
+        private Parameter _derivative;
 
         public void Installation(object sender, CharacterSlot enemy)
         {
@@ -48,7 +48,7 @@ namespace Core_Mk2
                 _isActive = false;
                 var target = (_link.Item1) switch
                 {
-                    EPlayerType.Self => owner,
+                    EPlayerType.Player => owner,
                     EPlayerType.Enemy => enemy,
                     _ => throw new NotImplementedException(),
                 };
@@ -65,7 +65,7 @@ namespace Core_Mk2
         {
             CharacterSlot target = (_triggerEvent.Item1) switch
             {
-                EPlayerType.Self => owner,
+                EPlayerType.Player => owner,
                 EPlayerType.Enemy => enemy,
                 _ => throw new NotImplementedException(),
             };
@@ -79,7 +79,7 @@ namespace Core_Mk2
         {
             CharacterSlot target = (_tickEvent.Item1) switch
             {
-                EPlayerType.Self => owner,
+                EPlayerType.Player => owner,
                 EPlayerType.Enemy => enemy,
                 _ => throw new NotImplementedException(),
             };

@@ -13,9 +13,9 @@ namespace Core_Mk2
     {
         #region _____________________ПОЛЯ_____________________
         /// <summary>
-        /// Структура: Характеристика <see cref="ECharacteristic"/>, её производная <see cref="EDerivative"/>, значение, представляемое <see cref="Derivative"/>
+        /// Структура: Характеристика <see cref="ECharacteristic"/>, её производная <see cref="EDerivative"/>, значение, представляемое <see cref="Parameter"/>
         /// </summary>
-        private Dictionary<ECharacteristic, Dictionary<EDerivative, Derivative>> _statList = new Dictionary<ECharacteristic, Dictionary<EDerivative, Derivative>>();
+        private Dictionary<ECharacteristic, Dictionary<EDerivative, Parameter>> _statList = new Dictionary<ECharacteristic, Dictionary<EDerivative, Parameter>>();
         #endregion
 
         #region _____________________КОНСТРУКТОР_____________________
@@ -25,30 +25,28 @@ namespace Core_Mk2
         /// <param name="character"></param>
         public DerivativesEnumeration(Character character)
         {
-            Dictionary<ECharacteristic, int> characteristicDictionary = new Dictionary<ECharacteristic, int>(character.Characteristics);
-
-            foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.CHAR_DER_PAIRS.Keys)
+            //инициируем словарь для хранения всех DerivativeValue этотго персонажа, являющихся финальными значениями характеристик
+            var derivativeValueValues = new Dictionary<ECharacteristic, ValueParameter >();
+            //сперва заполняем значения всех характеристик в _statList
+            foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.char_der_pairs.Keys)
             {
-                _statList.Add(characteristic, new Dictionary<EDerivative, Derivative>());
-                float A0 = DerivativesCalculator.Get_A0(characteristicDictionary, characteristic, EDerivative.Value);
-                _statList[characteristic].Add(EDerivative.Value, new Derivative(A0));
+                //создаём в _statList новый словарь для характеристики characteristic
+                _statList.Add(characteristic, new Dictionary<EDerivative, Parameter>());
+                //создаём новый экземпляр DerivativeValue
+                ValueParameter newDerivative = new ValueParameter(character[characteristic]);
+                //помещаем ссылку на созданный экземпляр в _statList
+                _statList[characteristic].Add(EDerivative.Value, newDerivative);
+                //помещаем ссылку на созданный экземпляр в derivativeValueValues
+                derivativeValueValues.Add(characteristic, newDerivative);
             }
-
-            characteristicDictionary.Clear();
-
-            foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.CHAR_DER_PAIRS.Keys)
+            
+            foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.char_der_pairs.Keys)
             {
-                characteristicDictionary.Add(characteristic, (int)_statList[characteristic][EDerivative.Value].FinalValue);
-            }
-
-            foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.CHAR_DER_PAIRS.Keys)
-            {
-                List<EDerivative> derList = ENUMS_STATIC_DATA.CHAR_DER_PAIRS[characteristic];
+                List<EDerivative> derList = ENUMS_STATIC_DATA.char_der_pairs[characteristic];
                 derList.Remove(EDerivative.Value);
-                foreach (EDerivative derivative in ENUMS_STATIC_DATA.CHAR_DER_PAIRS[characteristic])
+                foreach (EDerivative derivative in derList)
                 {
-                    float A0 = DerivativesCalculator.Get_A0(characteristicDictionary, characteristic, derivative);
-                    _statList[characteristic].Add(derivative, new Derivative(A0));
+                    _statList[characteristic].Add(derivative, new CommonParameter(derivativeValueValues, characteristic, derivative));
                 }
             }
         }
@@ -60,7 +58,7 @@ namespace Core_Mk2
         /// </summary>
         /// <param name="characteristic">Характеристика, производные которой будут возвращены</param>
         /// <returns>Словарь производных указанной характеристики</returns>
-        public Dictionary<EDerivative, Derivative> this[ECharacteristic characteristic]
+        public Dictionary<EDerivative, Parameter> this[ECharacteristic characteristic]
         {
             get { return _statList[characteristic]; }
         }
