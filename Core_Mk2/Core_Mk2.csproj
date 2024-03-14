@@ -50,11 +50,15 @@
     <Compile Include="data structures\CharacterBuilder.cs" />
     <Compile Include="data structures\CharacterSlot.cs" />
     <Compile Include="data structures\DamageModule.cs" />
-    <Compile Include="data structures\Derivative.cs" />
-    <Compile Include="data structures\DerivativesCalculator.cs" />
+    <Compile Include="data structures\Parameters\CommonParameter.cs" />
+    <Compile Include="data structures\Parameters\CurrentParameter.cs" />
+    <Compile Include="data structures\Parameters\MaxCommonParameter.cs" />
+    <Compile Include="data structures\Parameters\Parameter.cs" />
+    <Compile Include="data structures\CalculatorA0.cs" />
     <Compile Include="data structures\DerivativesEnumeration.cs" />
     <Compile Include="data structures\EffectBuilder.cs" />
     <Compile Include="data structures\enums.cs" />
+    <Compile Include="data structures\Parameters\ValueParameter.cs" />
     <Compile Include="data structures\TurnSwitch.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

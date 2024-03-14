@@ -158,13 +158,6 @@ namespace Core_Mk2
                             ECharacteristic.Endurance
                         }
                     },
-
-                    {
-                        EDerivative.CurrentHealth, new List<ECharacteristic>()
-                        {
-                            ECharacteristic.Endurance
-                        }
-                    }
                 }
             },
 
@@ -212,13 +205,6 @@ namespace Core_Mk2
                     },
 
                     {
-                        EDerivative.CurrentMana, new List<ECharacteristic>()
-                        {
-                            ECharacteristic.Fire
-                        }
-                    },
-
-                    {
                         EDerivative.Resistance, new List<ECharacteristic>()
                         {
                             ECharacteristic.Fire
@@ -246,13 +232,6 @@ namespace Core_Mk2
 
                     {
                         EDerivative.MaxMana, new List<ECharacteristic>()
-                        {
-                            ECharacteristic.Water
-                        }
-                    },
-
-                    {
-                        EDerivative.CurrentMana, new List<ECharacteristic>()
                         {
                             ECharacteristic.Water
                         }
@@ -292,13 +271,6 @@ namespace Core_Mk2
                     },
 
                     {
-                        EDerivative.CurrentMana, new List<ECharacteristic>()
-                        {
-                            ECharacteristic.Earth
-                        }
-                    },
-
-                    {
                         EDerivative.Resistance, new List<ECharacteristic>()
                         {
                             ECharacteristic.Earth
@@ -326,13 +298,6 @@ namespace Core_Mk2
 
                     {
                         EDerivative.MaxMana, new List<ECharacteristic>()
-                        {
-                            ECharacteristic.Air
-                        }
-                    },
-
-                    {
-                        EDerivative.CurrentMana, new List<ECharacteristic>()
                         {
                             ECharacteristic.Air
                         }

@@ -35,6 +35,9 @@ namespace Core_Mk2
         //Событие об ипускании владельцем value едениц EDamageType урона
         public event EventHandler<(EDamageType damageType, float value)> DamageEmitting;
 
+        //Событие о принятии владельцем value едениц EDamageType урона
+        public event EventHandler<(EDamageType damageType, float value)> DamageAccepting;
+
         //Событие о блокировании владельцем value едениц EDamageType урона
         public event EventHandler<(EDamageType damageType, float value)> DamageBlocking;
 
@@ -118,8 +121,20 @@ namespace Core_Mk2
         //Здоровье персонажа
         public float Health
         {
-            get { return Data[ECharacteristic.Endurance][EDerivative.CurrentHealth].CurrentValue; }
-            private set { Data[ECharacteristic.Endurance][EDerivative.CurrentHealth].CurrentValue = value; }
+            get
+            {
+                if (Data[ECharacteristic.Endurance][EDerivative.CurrentHealth] is CurrentParameter current)
+                    return current.CurrentValue;
+                else 
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
+            private set
+            {
+                if (Data[ECharacteristic.Endurance][EDerivative.CurrentHealth] is CurrentParameter current)
+                    current.CurrentValue = value;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
         }
 
 
@@ -142,33 +157,82 @@ namespace Core_Mk2
         //Мана огня персонажа
         public float ManaFire
         {
-            get { return Data[ECharacteristic.Fire][EDerivative.CurrentMana].CurrentValue; }
-            private set { Data[ECharacteristic.Fire][EDerivative.CurrentMana].CurrentValue = value; }
+            get
+            {
+                if (Data[ECharacteristic.Fire][EDerivative.CurrentMana] is CurrentParameter current)
+                    return current.CurrentValue;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
+            private set
+            {
+                if (Data[ECharacteristic.Fire][EDerivative.CurrentMana] is CurrentParameter current)
+                    current.CurrentValue = value;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
         }
 
 
         //Мана воды персонажа
         public float ManaWater
         {
-            get { return Data[ECharacteristic.Water][EDerivative.CurrentMana].CurrentValue; }
-            private set { Data[ECharacteristic.Water][EDerivative.CurrentMana].CurrentValue = value; }
+            get
+            {
+                if (Data[ECharacteristic.Water][EDerivative.CurrentMana] is CurrentParameter current)
+                    return current.CurrentValue;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
+            private set
+            {
+                if (Data[ECharacteristic.Water][EDerivative.CurrentMana] is CurrentParameter current)
+                    current.CurrentValue = value;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
         }
 
 
         //Мана земли персонажа
         public float ManaEarth
         {
-            get { return Data[ECharacteristic.Earth][EDerivative.CurrentMana].CurrentValue; }
-            private set { Data[ECharacteristic.Earth][EDerivative.CurrentMana].CurrentValue = value; }
+            get
+            {
+                if (Data[ECharacteristic.Earth][EDerivative.CurrentMana] is CurrentParameter current)
+                    return current.CurrentValue;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
+            private set
+            {
+                if (Data[ECharacteristic.Earth][EDerivative.CurrentMana] is CurrentParameter current)
+                    current.CurrentValue = value;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
         }
 
 
         //Мана воздуха персонажа
         public float ManaAir
         {
-            get { return Data[ECharacteristic.Air][EDerivative.CurrentMana].CurrentValue; }
-            private set { Data[ECharacteristic.Air][EDerivative.CurrentMana].CurrentValue = value; }
+            get
+            {
+                if (Data[ECharacteristic.Air][EDerivative.CurrentMana] is CurrentParameter current)
+                    return current.CurrentValue;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
+            private set
+            {
+                if (Data[ECharacteristic.Air][EDerivative.CurrentMana] is CurrentParameter current)
+                    current.CurrentValue = value;
+                else
+                    throw new InvalidOperationException("Некорректный класс по адресу.");
+            }
         }
+
 
         //Имя персонажа
         public string GetName
@@ -348,12 +412,14 @@ namespace Core_Mk2
                 characteristic == ECharacteristic.Earth ||
                 characteristic == ECharacteristic.Air))
                 throw new ArgumentOutOfRangeException("Передана некорректная характеристика");
+            if (Data[characteristic][EDerivative.MaxMana] is not CurrentParameter curent)
+                throw new InvalidOperationException("Некорректный класс по адресу.");
 
             //максимально допустимое количество маны
-            float maxMana = Data[characteristic][EDerivative.MaxMana].FinalValue;
+            float maxMana = curent.FinalValue;
 
             //текущее значение маны
-            float oldMana = Data[characteristic][EDerivative.CurrentMana].CurrentValue;
+            float oldMana = curent.CurrentValue;
 
             //обработка ситуаций, когда изменение количества маны невозможно
             if ((maxMana == oldMana && delta > 0) || (oldMana == 0 && delta < 0)) { return 0; }
@@ -364,19 +430,19 @@ namespace Core_Mk2
             // Устанавливаем CurrentMana в MaxMana, если новое значение больше MaxMana
             if (newMana > maxMana)
             {
-                Data[characteristic][EDerivative.CurrentMana].CurrentValue = maxMana;
+                curent.CurrentValue = maxMana;
                 return maxMana - oldMana;
             }
             // Устанавливаем CurrentMana в 0, если новое значение меньше 0
             else if (newMana < 0)
             {
-                Data[characteristic][EDerivative.CurrentMana].CurrentValue = 0;
+                curent.CurrentValue = 0;
                 return -oldMana;
             }
             // В остальных случаях устанавливаем CurrentMana равным newMana
             else
             {
-                Data[characteristic][EDerivative.CurrentMana].CurrentValue = newMana;
+                curent.CurrentValue = newMana;
                 return delta;
             }
         }
@@ -459,6 +525,17 @@ namespace Core_Mk2
         {
             var data = (damageType, value);
             DamageBlocking?.Invoke(this, data);
+        }
+
+        /// <summary>
+        /// Вызвать уведомелление о принятии владельцем value едениц damageType урона.
+        /// </summary>
+        /// <param name="damageType">Тип принимаемого урона.</param>
+        /// <param name="value">Количество урона</param>
+        public void AcceptDamageNotification(EDamageType damageType, float value)
+        {
+            var data = (damageType, value);
+            DamageAccepting?.Invoke(this, data);
         }
 
         /// <summary>

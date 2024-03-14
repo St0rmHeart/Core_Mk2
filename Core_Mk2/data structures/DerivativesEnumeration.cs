@@ -44,9 +44,37 @@ namespace Core_Mk2
             {
                 List<EDerivative> derList = ENUMS_STATIC_DATA.char_der_pairs[characteristic];
                 derList.Remove(EDerivative.Value);
+                derList.Remove(EDerivative.MaxMana);
+                derList.Remove(EDerivative.MaxHealth);
                 foreach (EDerivative derivative in derList)
                 {
-                    _statList[characteristic].Add(derivative, new CommonParameter(derivativeValueValues, characteristic, derivative));
+                    switch (derivative)
+                    {
+                        case EDerivative.CurrentMana:
+                            var currentMana = new CurrentParameter(derivativeValueValues, characteristic, EDerivative.CurrentMana);
+                            var maxMana = new MaxCommonParameter(derivativeValueValues, characteristic, EDerivative.MaxMana, currentMana);
+                            _statList[characteristic].Add(EDerivative.MaxMana, maxMana);
+                            _statList[characteristic].Add(EDerivative.CurrentMana, currentMana);
+                            break;
+                        case EDerivative.CurrentHealth:
+                            var currentHealth = new CurrentParameter(derivativeValueValues, ECharacteristic.Endurance, EDerivative.CurrentHealth);
+                            var maxHealth = new MaxCommonParameter(derivativeValueValues, ECharacteristic.Endurance, EDerivative.MaxHealth, currentHealth);
+                            _statList[characteristic].Add(EDerivative.MaxHealth, maxHealth);
+                            _statList[characteristic].Add(EDerivative.CurrentHealth, currentHealth);
+                            break;
+                        default:
+                            _statList[characteristic].Add(derivative, new CommonParameter(derivativeValueValues, characteristic, derivative));
+                            break;
+                    }
+
+                    if (derivative == EDerivative.CurrentMana)
+                    {
+                        
+                    }
+                    else
+                    {
+                        
+                    }
                 }
             }
         }
