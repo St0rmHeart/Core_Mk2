@@ -22,7 +22,6 @@ namespace Core_Mk2
             EDerivative derivative) : base()
         {
             _variables[0] = CalculatorA0.GetModule(characteristic, derivative, derivativeValueValues).CalculateA0();
-            SetFinalValue();
         }
 
         #region ______________________СВОЙСТВА______________________

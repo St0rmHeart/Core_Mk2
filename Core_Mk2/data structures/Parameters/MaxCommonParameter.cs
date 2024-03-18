@@ -12,19 +12,14 @@ namespace Core_Mk2
     /// </summary>
     public class MaxCommonParameter : CommonParameter
     {
-        public MaxCommonParameter(
-            Dictionary<ECharacteristic, ValueParameter> derivativeValueValues,
-            ECharacteristic characteristic,
-            EDerivative derivative,
-            CurrentParameter currentCommonParameter
-            )
+        public MaxCommonParameter(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues, ECharacteristic characteristic, EDerivative derivative, CurrentParameter currentCommonParameter)
             : base(derivativeValueValues, characteristic, derivative) { _currentCommonParameter = currentCommonParameter; }
         private readonly CurrentParameter _currentCommonParameter;
 
-        protected override void SetFinalValue()
+        public override void SetFinalValue()
         {
             FinalValue = ((_variables[0] * _variables[1] + _variables[2]) * _variables[3] + _variables[4]) * _variables[5] + _variables[6];
-            if ( _currentCommonParameter != null && _currentCommonParameter.CurrentValue > FinalValue)
+            if (_currentCommonParameter.CurrentValue > FinalValue)
                 _currentCommonParameter.CurrentValue = FinalValue;
         }
     }

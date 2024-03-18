@@ -14,10 +14,11 @@ namespace Core_Mk2
         Constant = -1,
         None = 0,
         //Виды ивентов
-        GameStart,
         StepExecution,
+        Death,
 
         DamageEmitting,
+        DamageAccepting,
         DamageBlocking,
         DamageTaking,
 
@@ -65,7 +66,7 @@ namespace Core_Mk2
     {
         None = 0,
         //виды указателей
-        Player,
+        Self,
         Enemy,
     }
     /// <summary>
@@ -100,14 +101,14 @@ namespace Core_Mk2
         MaxHealth,      //максимальный запас здоровья
         CurrentHealth,  //текущий(стартовый) запас здоровья
     }
-    public static class ENUMS_STATIC_DATA
+    public static class ENUMS_CONSTANT_DATA
     {
-        static ENUMS_STATIC_DATA()
+        static ENUMS_CONSTANT_DATA()
         {
 
         }
 
-        public static readonly Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>> derivative_Subscriptions = new Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>>()
+        public static readonly Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>> DERIVATIVE_SUBSCRIPTIONS = new Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>>()
         { 
             {
                 ECharacteristic.Strength, new Dictionary<EDerivative, List<ECharacteristic>>()
@@ -314,7 +315,7 @@ namespace Core_Mk2
 
         };
 
-        public static readonly Dictionary<ECharacteristic, List<EDerivative>> char_der_pairs = new Dictionary<ECharacteristic, List<EDerivative>>()
+        public static readonly Dictionary<ECharacteristic, List<EDerivative>> CHAR_DER_PAIRS = new Dictionary<ECharacteristic, List<EDerivative>>()
         {
             {
                 ECharacteristic.Strength, new List<EDerivative>()

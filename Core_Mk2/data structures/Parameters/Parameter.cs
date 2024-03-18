@@ -24,7 +24,7 @@ namespace Core_Mk2
         /// <summary>
         /// Произвести перерассчет итогового значения производной
         /// </summary>
-        protected virtual void SetFinalValue()
+        public virtual void SetFinalValue()
         {
             FinalValue = ((_variables[0] * _variables[1] + _variables[2]) * _variables[3] + _variables[4]) * _variables[5] + _variables[6];
         }

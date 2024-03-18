@@ -11,7 +11,7 @@ namespace Core_Mk2
         /// <summary>
         /// Строитель персонажа. Строитель кеширует настройки, устанавливаемые через его методы и может создавать персонажа по указанным настройкам.
         /// </summary>
-        public class CharacterBuilder
+        public class CBuilder
         {
             #region _____________________ПОЛЯ_____________________
             //имя
@@ -28,7 +28,7 @@ namespace Core_Mk2
             /// <summary>
             /// Конструктр строителя персонажа. При вызове устанавливает параметры по умолчанию через Reset();
             /// </summary>
-            public CharacterBuilder() { Reset(); }
+            public CBuilder() { Reset(); }
             #endregion
 
             #region _____________________МЕТОДЫ_____________________
@@ -37,7 +37,7 @@ namespace Core_Mk2
             /// </summary>
             /// <param name="name">Имя персонажа</param>
             /// <returns></returns>
-            public CharacterBuilder With_Name(string name)
+            public CBuilder With_Name(string name)
             {
                 //обработчик исключений
                 if (name == null || name == "") throw new ArgumentNullException("Не введено имя персонажа");
@@ -52,7 +52,7 @@ namespace Core_Mk2
             /// </summary>
             /// <param name="xp">Количество очков опыта</param>
             /// <returns></returns>
-            public CharacterBuilder With_XP(int xp)
+            public CBuilder With_XP(int xp)
             {
                 //обработчик исключений
                 if (xp < 0) throw new ArgumentOutOfRangeException("Опыт не может быть отрицательным");
@@ -68,7 +68,7 @@ namespace Core_Mk2
             /// <param name="characteristic">характеристика</param>
             /// <param name="value">Устанавливаемое значение</param>
             /// <returns></returns>
-            public CharacterBuilder With_Characteristic(ECharacteristic characteristic, int value)
+            public CBuilder With_Characteristic(ECharacteristic characteristic, int value)
             {
                 //обработчик исключений
                 if (value < 0) throw new ArgumentOutOfRangeException("Значение характеристики не может быть отрицательным");
@@ -85,7 +85,7 @@ namespace Core_Mk2
             /// <param name="bodyPart">Ячейка снаряжения</param>
             /// <param name="equipment">Устанавливаемяй объект снаряжения</param>
             /// <returns></returns>
-            public CharacterBuilder With_Equipment(EBodyPart bodyPart, Equipment equipment)
+            public CBuilder With_Equipment(EBodyPart bodyPart, Equipment equipment)
             {
                 //обработчик исключений
                 if (bodyPart == EBodyPart.None) throw new ArgumentOutOfRangeException("Недопустимое использование None.");
@@ -103,12 +103,12 @@ namespace Core_Mk2
             /// Сборс настроек строителя в значения по умолчанию
             /// </summary>
             /// <returns></returns>
-            public CharacterBuilder Reset()
+            public CBuilder Reset()
             {
                 _name = "";
                 _xp = 0;
                 _characteristics.Clear();
-                foreach (ECharacteristic characteristic in ENUMS_STATIC_DATA.char_der_pairs.Keys)
+                foreach (ECharacteristic characteristic in ENUMS_CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
                 {
                     _characteristics.Add(characteristic, 0);
                 }

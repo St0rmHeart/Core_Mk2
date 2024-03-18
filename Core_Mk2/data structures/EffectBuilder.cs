@@ -65,7 +65,7 @@ namespace Core_Mk2
             return this;
         }
 
-        public Effect Build()
+        public TriggerParameterModifier Build()
         {
             if (_value != 0 &&
                 _duration != 0 &&
@@ -79,7 +79,7 @@ namespace Core_Mk2
                 _tickEvent.Item1 != 0 &&
                 _tickEvent.Item2 != 0)
             {
-                var effect = new Effect(
+                var effect = new TriggerParameterModifier(
                 _value,
                 _triggerThreshold,
                 _duration,

@@ -264,18 +264,18 @@ namespace Core_Mk2
         #endregion
         public Form1()
         {
-            var characterBuilder = new Character.CharacterBuilder();
+            var characterBuilder = new Character.CBuilder();
             var effectBuilder = new EffectBuilder();
 
             var sword = new Equipment(EBodyPart.Weapon, "Древний Эльфийский Меч");
-            Effect newEffect = effectBuilder
+            TriggerParameterModifier newEffect = effectBuilder
                 .WithValue(10)
                 .WithDuration(5)
                 .WithTriggerThreshold(8)
                 .WithMaxStack(3)
-                .WithLink(EPlayerType.Player, ECharacteristic.Strength, EDerivative.Value, EVariable.C2)
-                .WithTriggerEvent(EPlayerType.Player, EEvent.DeltaGold)
-                .WithTickEvent(EPlayerType.Player, EEvent.StepExecution)
+                .WithLink(EPlayerType.Self, ECharacteristic.Strength, EDerivative.Value, EVariable.C2)
+                .WithTriggerEvent(EPlayerType.Self, EEvent.DeltaGold)
+                .WithTickEvent(EPlayerType.Self, EEvent.StepExecution)
                 .Build();
             sword.Effects.Add(newEffect);
 
@@ -350,6 +350,8 @@ namespace Core_Mk2
             InitializeComponent();
             KeyDown += MainForm_KeyDown;
             UpdateData();
+
+            var test = new PassiveParameterModifier.PPMBuilder();
 
             var uselessInt = 3;
         }

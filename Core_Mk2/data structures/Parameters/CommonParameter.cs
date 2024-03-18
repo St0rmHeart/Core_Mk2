@@ -21,15 +21,11 @@ namespace Core_Mk2
         /// <param name="derivativeValueValues">Ссылки на все <see cref="ValueParameter"/> персонажа.</param>
         /// <param name="characteristic">Характеристика <see cref="ECharacteristic"/>, к корторой относится данный <see cref="CommonParameter"/></param>
         /// <param name="derivative">Производная <see cref="EDerivative"/>, к корторой относится данный <see cref="CommonParameter"/></param>
-        public CommonParameter(
-            Dictionary<ECharacteristic, ValueParameter> derivativeValueValues,
-            ECharacteristic characteristic,
-            EDerivative derivative)
+        public CommonParameter(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues, ECharacteristic characteristic, EDerivative derivative)
         {
             _moduleA0 = CalculatorA0.GetModule(characteristic, derivative, derivativeValueValues);
-            UpdateA0(this, EventArgs.Empty);
             //получение списка всех ValueParameter, на которые нужно подписаться
-            var subscriptionsList = ENUMS_STATIC_DATA.derivative_Subscriptions[characteristic][derivative];
+            var subscriptionsList = ENUMS_CONSTANT_DATA.DERIVATIVE_SUBSCRIPTIONS[characteristic][derivative];
             foreach (var subscription in subscriptionsList)
             {
                 derivativeValueValues[subscription].ValueDerivativeUpdate += UpdateA0;

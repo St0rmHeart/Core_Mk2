@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Core_Mk2
 {
@@ -17,55 +18,48 @@ namespace Core_Mk2
         #endregion
 
         #region _____________________EVENT_____________________
-        //Событие инициализации всех эффектов.Долджно вызываться только в классе - владельце и
-        //в качестве параметра должен передаваться текущий противник владельца
-        public event EventHandler<CharacterSlot> Initialization;
-
-        //Событие начала сражение, необходимое болше всего для "пассивных эффектов"
-        public event EventHandler GameStart;
-
         //Событие о завершении хода владельцем
-        public event EventHandler StepExecution;
+        public event EventHandler<EEvent> StepExecution;
 
         //Событие о гибели владельца
-        public event EventHandler Death;
+        public event EventHandler<EEvent> Death;
 
 
 
         //Событие об ипускании владельцем value едениц EDamageType урона
-        public event EventHandler<(EDamageType damageType, float value)> DamageEmitting;
+        public event EventHandler<(EEvent name, EDamageType damageType, float value)> DamageEmitting;
 
         //Событие о принятии владельцем value едениц EDamageType урона
-        public event EventHandler<(EDamageType damageType, float value)> DamageAccepting;
+        public event EventHandler<(EEvent name, EDamageType damageType, float value)> DamageAccepting;
 
         //Событие о блокировании владельцем value едениц EDamageType урона
-        public event EventHandler<(EDamageType damageType, float value)> DamageBlocking;
+        public event EventHandler<(EEvent name, EDamageType damageType, float value)> DamageBlocking;
 
         //Событие о получении владельцем value едениц EDamageType урона
-        public event EventHandler<(EDamageType damageType, float value)> DamageTaking;
+        public event EventHandler<(EEvent name, EDamageType damageType, float value)> DamageTaking;
 
         //Событие о изменении количества очков опыта у владельца
-        public event EventHandler<float> DeltaXP;
+        public event EventHandler<(EEvent name, float value)> DeltaXP;
 
         //Событие о изменении количества очков здоровья у владельца 
-        public event EventHandler<float> DeltaHP;
+        public event EventHandler<(EEvent name, float value)> DeltaHP;
 
         //Событие о изменении количества золота у владельца 
-        public event EventHandler<float> DeltaGold;
+        public event EventHandler<(EEvent name, float value)> DeltaGold;
 
 
 
         //Событие о изменении количества маны огня у владельца 
-        public event EventHandler<float> DeltaFireMana;
+        public event EventHandler<(EEvent name, float value)> DeltaFireMana;
 
         //Событие о изменении количества маны воды у владельца 
-        public event EventHandler<float> DeltaWaterMana;
+        public event EventHandler<(EEvent name, float value)> DeltaWaterMana;
 
         //Событие о изменении количества маны воздуха у владельца 
-        public event EventHandler<float> DeltaAirMana;
+        public event EventHandler<(EEvent name, float value)> DeltaAirMana;
 
         //Событие о изменении количества маны земли у владельца 
-        public event EventHandler<float> DeltaEarthMana;
+        public event EventHandler<(EEvent name, float value)> DeltaEarthMana;
         #endregion
 
         #region _________________________ПОЛЯ_________________________
@@ -105,15 +99,6 @@ namespace Core_Mk2
 
             //Рассчет всех производных параметров персонажа
             Data = new DerivativesEnumeration(character);
-
-            //инициализация всех эффектов в снаряжении персонажа
-            foreach (Equipment item in Character.Equipment.Values)
-            {
-                foreach (Effect effect in item.Effects)
-                {
-                    Initialization += effect.Installation;
-                }
-            }
         }
         #endregion
 
@@ -242,26 +227,12 @@ namespace Core_Mk2
         #endregion
 
         #region _____________________МЕТОДЫ_____________________
-
-        /// <summary>
-        /// Пробрасывает связи между А, В, C, где:
-        /// А - события;
-        /// В - методы, реагирующие на события;
-        /// С - данные, на которые методы оказывают влияние.
-        /// Должен вызываться только персонажем-владельцем.
-        /// </summary>
-        /// <param name="enemy">Текущий противник</param>
-        public void InitializeEffects(CharacterSlot enemy)
-        {
-            Initialization?.Invoke(this, enemy);
-        }
-
         /// <summary>
         /// Завершить ход и вызвать событие о завершении хода.
         /// </summary>
         public void CompleteStep()
         {
-            StepExecution?.Invoke(this, EventArgs.Empty);
+            StepExecution?.Invoke(this, EEvent.StepExecution);
         }
 
         /// <summary>
@@ -276,7 +247,7 @@ namespace Core_Mk2
             if (amount < 3 || amount > 5) throw new ArgumentOutOfRangeException("amount мне диапазона от 3 до 5.");
 
             //достаём нужные коэффициенты
-            var referenceCharacteristic = (ECharacteristic)(int)stoneType;
+            var referenceCharacteristic = (ECharacteristic)stoneType;
             float currentAddTurnChance = Data[referenceCharacteristic][EDerivative.AddTurnChance].FinalValue;
 
             //проверка на то, нужно ли завершить ход
@@ -303,7 +274,7 @@ namespace Core_Mk2
             if (amount <= 0) new ArgumentOutOfRangeException("Количество поглощаемых камней не может быть меньше еденицы.");
 
             //связанная с камнем характеристика
-            var referenceCharacteristic = (ECharacteristic)(int)stoneType;
+            var referenceCharacteristic = (ECharacteristic)stoneType;
 
             //множитель эффекта поглощения камней
             float currentTerminationMultiplier = Data[referenceCharacteristic][EDerivative.TerminationMult].FinalValue;
@@ -363,7 +334,7 @@ namespace Core_Mk2
         public void ChangeXp_WithNotification(float value)
         {
             int result = ChangeXp(value);
-            if (result != 0) { DeltaXP?.Invoke(this, result); }
+            if (result != 0) { DeltaXP?.Invoke(this, (EEvent.DeltaXP, result)); }
         }
 
         /// <summary>
@@ -395,7 +366,7 @@ namespace Core_Mk2
         public void ChangeGold_WithNotification(float value)
         {
             int result = ChangeGold(value);
-            if (result != 0) { DeltaGold?.Invoke(this, result); }
+            if (result != 0) { DeltaGold?.Invoke(this, (EEvent.DeltaGold, result)); }
         }
 
         /// <summary>
@@ -458,10 +429,10 @@ namespace Core_Mk2
             if (result != 0)
                 switch (characteristic)
                 {
-                    case ECharacteristic.Fire: DeltaFireMana?.Invoke(this, delta); break;
-                    case ECharacteristic.Water: DeltaWaterMana?.Invoke(this, delta); break;
-                    case ECharacteristic.Earth: DeltaEarthMana?.Invoke(this, delta); break;
-                    case ECharacteristic.Air: DeltaAirMana?.Invoke(this, delta); break;
+                    case ECharacteristic.Fire: DeltaFireMana?.Invoke(this, (EEvent.DeltaFireMana, delta)); break;
+                    case ECharacteristic.Water: DeltaWaterMana?.Invoke(this, (EEvent.DeltaWaterMana, delta)); break;
+                    case ECharacteristic.Earth: DeltaEarthMana?.Invoke(this, (EEvent.DeltaEarthMana, delta)); break;
+                    case ECharacteristic.Air: DeltaAirMana?.Invoke(this, (EEvent.DeltaAirMana, delta)); break;
                 }
         }
 
@@ -485,7 +456,7 @@ namespace Core_Mk2
             else if (newHp < 0)
             {
                 Health = 0;
-                Death?.Invoke(this, EventArgs.Empty);
+                Death?.Invoke(this, EEvent.Death);
                 return 0;
             }
             else
@@ -502,7 +473,7 @@ namespace Core_Mk2
         public void ChangeHp_WithNotification(float delta)
         {
             float result = ChangeHp(delta);
-            if (result != 0) { DeltaHP?.Invoke(this, result); }
+            if (result != 0) { DeltaHP?.Invoke(this, (EEvent.DeltaHP, result)); }
         }
 
         /// <summary>
@@ -512,7 +483,7 @@ namespace Core_Mk2
         /// <param name="value">Количество урона.</param>
         public void EmitDamageNotification(EDamageType damageType, float value)
         {
-            var data = (damageType, value);
+            var data = (EEvent.DamageEmitting, damageType, value);
             DamageEmitting?.Invoke(this, data);
         }
 
@@ -523,7 +494,7 @@ namespace Core_Mk2
         /// <param name="value">Количество урона.</param>
         public void BlockDamageNotification(EDamageType damageType, float value)
         {
-            var data = (damageType, value);
+            var data = (EEvent.DamageBlocking, damageType, value);
             DamageBlocking?.Invoke(this, data);
         }
 
@@ -534,7 +505,7 @@ namespace Core_Mk2
         /// <param name="value">Количество урона</param>
         public void AcceptDamageNotification(EDamageType damageType, float value)
         {
-            var data = (damageType, value);
+            var data = (EEvent.DamageAccepting, damageType, value);
             DamageAccepting?.Invoke(this, data);
         }
 
@@ -546,8 +517,8 @@ namespace Core_Mk2
         public void TakeDamageNotification(EDamageType damageType, float value)
         {
             var result = ChangeHp(-value);
-            DeltaHP?.Invoke(this, result);
-            var data = (damageType, result);
+            DeltaHP?.Invoke(this, (EEvent.DeltaHP, result));
+            var data = (EEvent.DamageTaking, damageType, result);
             DamageTaking?.Invoke(this, data);
         }
         #endregion

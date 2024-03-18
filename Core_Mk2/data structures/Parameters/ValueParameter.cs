@@ -24,11 +24,7 @@ namespace Core_Mk2
         /// Конструктор <see cref="ValueParameter"/>, просто присваивающий в <see cref="EVariable.A0"/> значение какой-либо характеристики <see cref="Character"/>.
         /// </summary>
         /// <param name="baseValue">Значение характеристики.</param>
-        public ValueParameter(float baseValue)
-        {
-            _variables[0] = baseValue;
-            SetFinalValue();
-        }
+        public ValueParameter(float baseValue) { _variables[0] = baseValue; }
         #endregion
 
         #region _____________________МЕТОДЫ_____________________
