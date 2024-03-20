@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +14,10 @@ namespace Core_Mk2
     {
         #region _____________________ПОЛЯ_____________________
         //Массив переменных для рассчета FinalValue, переменные массива соотносятся с перменными в рассчетной формуле конечного значения парамтра.
-        protected float[] _variables = new float[] { 0, 1, 0, 1, 0, 1, 0 };
+        protected double[] _variables = new double[] { 0, 1, 0, 1, 0, 1, 0 };
 
         //Итоговое значение параметра
-        public float FinalValue { get; protected set; }
+        public double FinalValue { get; protected set; }
         #endregion
 
 
@@ -24,9 +25,9 @@ namespace Core_Mk2
         /// <summary>
         /// Произвести перерассчет итогового значения производной
         /// </summary>
-        protected virtual void SetFinalValue()
+        public virtual void SetFinalValue()
         {
-            FinalValue = ((_variables[0] * _variables[1] + _variables[2]) * _variables[3] + _variables[4]) * _variables[5] + _variables[6];
+            FinalValue = (((_variables[0] * _variables[1] + _variables[2]) * _variables[3] + _variables[4]) * _variables[5] + _variables[6]).Round();
         }
 
         /// <summary>
@@ -34,10 +35,16 @@ namespace Core_Mk2
         /// </summary>
         /// <param name="variable">Имя переменной.</param>
         /// <param name="value">Значение, на которое производится изменение.</param>
-        public virtual void ChangeVariable(EVariable variable, float value)
+        public virtual void ChangeVariable(EVariable variable, double value)
         {
-            if (variable == EVariable.None || variable == EVariable.A0) throw new ArgumentOutOfRangeException("Значение " + nameof(variable) + " недопустимо.");
-            _variables[(int)variable - 1] += value;
+            if (variable == EVariable.None || variable == EVariable.A0)
+            {
+                throw new ArgumentOutOfRangeException("Значение " + nameof(variable) + " недопустимо.");
+            }
+
+            var index = (int)variable - 1;
+            var newValue = _variables[index] + value;
+            _variables[index] = newValue.Round();
             SetFinalValue();
         }
         #endregion

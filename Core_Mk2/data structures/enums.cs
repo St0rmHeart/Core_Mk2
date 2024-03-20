@@ -14,10 +14,11 @@ namespace Core_Mk2
         Constant = -1,
         None = 0,
         //Виды ивентов
-        GameStart,
         StepExecution,
+        Death,
 
         DamageEmitting,
+        DamageAccepting,
         DamageBlocking,
         DamageTaking,
 
@@ -65,7 +66,7 @@ namespace Core_Mk2
     {
         None = 0,
         //виды указателей
-        Player,
+        Self,
         Enemy,
     }
     /// <summary>
@@ -100,14 +101,16 @@ namespace Core_Mk2
         MaxHealth,      //максимальный запас здоровья
         CurrentHealth,  //текущий(стартовый) запас здоровья
     }
-    public static class ENUMS_STATIC_DATA
+    public static class CONSTANT_DATA
     {
-        static ENUMS_STATIC_DATA()
-        {
+        public static readonly int ACCURACY_OF_CALCULATIONS = 4;
 
+        public static double Round(this double value)
+        {
+            return Math.Round(value, ACCURACY_OF_CALCULATIONS);
         }
 
-        public static readonly Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>> derivative_Subscriptions = new Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>>()
+        public static readonly Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>> DERIVATIVE_SUBSCRIPTIONS = new Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>>()
         { 
             {
                 ECharacteristic.Strength, new Dictionary<EDerivative, List<ECharacteristic>>()
@@ -158,6 +161,13 @@ namespace Core_Mk2
                             ECharacteristic.Endurance
                         }
                     },
+
+                    {
+                        EDerivative.CurrentHealth, new List<ECharacteristic>()
+                        {
+                            
+                        }
+                    },
                 }
             },
 
@@ -205,6 +215,13 @@ namespace Core_Mk2
                     },
 
                     {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+                            
+                        }
+                    },
+
+                    {
                         EDerivative.Resistance, new List<ECharacteristic>()
                         {
                             ECharacteristic.Fire
@@ -234,6 +251,13 @@ namespace Core_Mk2
                         EDerivative.MaxMana, new List<ECharacteristic>()
                         {
                             ECharacteristic.Water
+                        }
+                    },
+
+                    {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+
                         }
                     },
 
@@ -271,6 +295,13 @@ namespace Core_Mk2
                     },
 
                     {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+
+                        }
+                    },
+
+                    {
                         EDerivative.Resistance, new List<ECharacteristic>()
                         {
                             ECharacteristic.Earth
@@ -304,6 +335,13 @@ namespace Core_Mk2
                     },
 
                     {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+
+                        }
+                    },
+
+                    {
                         EDerivative.Resistance, new List<ECharacteristic>()
                         {
                             ECharacteristic.Air
@@ -314,7 +352,7 @@ namespace Core_Mk2
 
         };
 
-        public static readonly Dictionary<ECharacteristic, List<EDerivative>> char_der_pairs = new Dictionary<ECharacteristic, List<EDerivative>>()
+        public static readonly Dictionary<ECharacteristic, List<EDerivative>> CHAR_DER_PAIRS = new Dictionary<ECharacteristic, List<EDerivative>>()
         {
             {
                 ECharacteristic.Strength, new List<EDerivative>()
@@ -394,6 +432,8 @@ namespace Core_Mk2
                 }
             },
         };
+
+
     }
 
     /// <summary>

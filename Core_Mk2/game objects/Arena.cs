@@ -24,7 +24,7 @@ namespace Core_Mk2
         //
         private TurnSwitch _isTurnEnd = new TurnSwitch();
         //
-        private DamageModule _damageModule;
+        private DamageModule _damageModule = new DamageModule();
 
         #endregion
 
@@ -42,20 +42,45 @@ namespace Core_Mk2
             _player = new CharacterSlot(player);
             _enemy = new CharacterSlot(enemy);
 
-            //установка ссылок на переключателя хода, чтобы с одним переключателем могла работать как арена, так и персонажи
-            _player.TurnSwitcherModule = _isTurnEnd;
-            _enemy.TurnSwitcherModule = _isTurnEnd;
+            //проброска ссылок между всеми объектами
+            CharacterSlot[] initArray = new CharacterSlot[2] { _player, _enemy };
+            for (int i = 0; i < initArray.Length; i++)
+            {
+                var pointer1 = initArray[i];
+                var pointer2 = initArray[(i + 1) % 2];
 
-            //инициализация модуля урона
-            _damageModule = new DamageModule();
-            //установка ссылок на модуль урона
-            _player.DamageModule = _damageModule;
-            _enemy.DamageModule = _damageModule;
+                //установка ссылки на переключателя хода
+                pointer1.TurnSwitcherModule = _isTurnEnd;
+                //установка ссылки на модуль урона
+                pointer1.DamageModule = _damageModule;
+                //установка ссылки на оппонента
+                pointer1.CurrentOpponent = pointer2;
 
-
-            //установка ссылок на оппонента для кажодого из персонажей
-            _player.CurrentOpponent = _enemy;
-            _enemy.CurrentOpponent = _player;
+                //инициализация всех эффектов в снаряжении персонажа
+                foreach (Equipment item in pointer1.Character.Equipment.Values)
+                {
+                    foreach (IEffect effect in item.Effects)
+                    {
+                        effect.Installation(pointer1, pointer2);
+                    }
+                }
+            }
+            foreach (CharacterSlot characterSlot in initArray)
+            {
+                foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+                {
+                    characterSlot.Data[characteristic][EDerivative.Value].SetFinalValue();
+                }
+                foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+                {
+                    foreach (EDerivative derivative in CONSTANT_DATA.CHAR_DER_PAIRS[characteristic])
+                    {
+                        (characterSlot.Data[characteristic][derivative] as CommonParameter)?.UpdateA0();
+                    }
+                }
+                (characterSlot.Data[ECharacteristic.Endurance][EDerivative.CurrentHealth] as CurrentCommonParameter).CurrentValue = 
+                    characterSlot.Data[ECharacteristic.Endurance][EDerivative.MaxHealth].FinalValue; ;
+            }
 
             //У кого из персонажей больше ловкость - тот и начинает ход первым
             var playerDexterity = _player.Data[ECharacteristic.Dexterity][EDerivative.Value].FinalValue;
@@ -65,20 +90,10 @@ namespace Core_Mk2
             else
             { _activePlayer = _enemy; _passivePlayer = _player; }
             //инициализация эффектов у обоих персонажей
-            EffectsInitialization();
         }
         #endregion
 
         #region _____________________МЕТОДЫ_____________________
-        /// <summary>
-        /// Инициализировать эффектыв у обоих персонажей арены
-        /// </summary>
-        private void EffectsInitialization()
-        {
-            _player.InitializeEffects(_enemy);
-            _enemy.InitializeEffects(_player);
-        }
-
         /// <summary>
         /// Пока реализует совмещение активным игроком какой-либо комбинации камней, на игровой доске.
         /// </summary>

@@ -16,11 +16,14 @@ namespace Core_Mk2
         #endregion
 
         #region ______________________КОНСТРУКТОР______________________
-        protected CalculatorA0(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues) { _derivativeValueValues = derivativeValueValues; }
+        protected CalculatorA0(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues)
+        {
+            _derivativeValueValues = derivativeValueValues;
+        }
         #endregion
 
         #region _____________________МЕТОДЫ_____________________
-        protected float GetCharacteristicValue(ECharacteristic characteristic)
+        protected double GetCharacteristicValue(ECharacteristic characteristic)
         {
             return _derivativeValueValues[characteristic].FinalValue;
         }
@@ -100,7 +103,7 @@ namespace Core_Mk2
         ///Производит рассчет <see cref="EVariable.A0"/> для <see cref="CalculateNewA0(CommonParameter)"/>.
         ///Метод переопределён для каждого уникального <see cref="CommonParameter"/>.
         /// </summary>
-        public abstract float CalculateA0();
+        public abstract double CalculateA0();
         #endregion
     }
 
@@ -115,11 +118,11 @@ namespace Core_Mk2
     public class EnduranceMaxHealthModule : CalculatorA0
     {
         public EnduranceMaxHealthModule(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues) : base(derivativeValueValues) { }
-        public override float CalculateA0()
+        public override double CalculateA0()
         {
-            float charValue = GetCharacteristicValue(ECharacteristic.Endurance);
-            charValue = 20 + 1.2f * charValue + (float)Math.Pow(charValue, 0.9) * 2;
-            return charValue;
+            double charValue = GetCharacteristicValue(ECharacteristic.Endurance);
+            charValue = 20 + 1.2 * charValue + Math.Pow(charValue, 0.9) * 2;
+            return charValue.Round();
         }
     }
 
@@ -130,11 +133,11 @@ namespace Core_Mk2
     {
         public UniversalAddTurnChanceModule(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues) : base(derivativeValueValues) { }
         protected ECharacteristic characteristic;
-        public override float CalculateA0()
+        public override double CalculateA0()
         {
-            float charValue = GetCharacteristicValue(characteristic);
-            charValue = (float)Math.Pow(charValue, 0.6) / 100;
-            return charValue;
+            double charValue = GetCharacteristicValue(characteristic);
+            charValue = Math.Pow(charValue, 0.6) / 100;
+            return charValue.Round();
         }
     }
     public class StrengthAddTurnChanceModule : UniversalAddTurnChanceModule
@@ -180,11 +183,11 @@ namespace Core_Mk2
     {
         public UniversalTerminationMultModule(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues) : base(derivativeValueValues) { }
         protected ECharacteristic characteristic;
-        public override float CalculateA0()
+        public override double CalculateA0()
         {
-            float charValue = GetCharacteristicValue(characteristic);
-            charValue = 1 + (float)Math.Pow(charValue, 0.93) / 100;
-            return charValue;
+            double charValue = GetCharacteristicValue(characteristic);
+            charValue = 1 + Math.Pow(charValue, 0.93) / 100;
+            return charValue.Round();
         }
     }
     public class StrengthTerminationMultModule : UniversalTerminationMultModule
@@ -230,11 +233,11 @@ namespace Core_Mk2
     {
         public UniversalResistanceModule(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues) : base(derivativeValueValues) { }
         protected ECharacteristic characteristic;
-        public override float CalculateA0()
+        public override double CalculateA0()
         {
-            float charValue = GetCharacteristicValue(characteristic);
-            charValue = (float)Math.Pow(charValue, 0.5) / 100;
-            return charValue;
+            double charValue = GetCharacteristicValue(characteristic);
+            charValue = Math.Pow(charValue, 0.5) / 100;
+            return charValue.Round();
         }
     }
     public class StrengthResistanceModule : UniversalResistanceModule
@@ -270,11 +273,11 @@ namespace Core_Mk2
     {
         public UniversalMaxManaModule(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues) : base(derivativeValueValues) { }
         protected ECharacteristic characteristic;
-        public override float CalculateA0()
+        public override double CalculateA0()
         {
-            float charValue = GetCharacteristicValue(characteristic);
-            charValue = 15 + charValue + (float)Math.Pow(charValue, 0.5);
-            return charValue;
+            double charValue = GetCharacteristicValue(characteristic);
+            charValue = 15 + charValue + Math.Pow(charValue, 0.5);
+            return charValue.Round();
         }
     }
     public class FireMaxManaModule : UniversalMaxManaModule
@@ -305,11 +308,11 @@ namespace Core_Mk2
     {
         public UniversalCurrentManaModule(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues) : base(derivativeValueValues) { }
         protected ECharacteristic characteristic;
-        public override float CalculateA0()
+        public override double CalculateA0()
         {
-            float charValue = GetCharacteristicValue(characteristic);
-            charValue = charValue / 10 + (float)Math.Pow(charValue, 0.6);
-            return charValue;
+            double charValue = GetCharacteristicValue(characteristic);
+            charValue = charValue / 10 + Math.Pow(charValue, 0.6);
+            return charValue.Round();
         }
     }
     public class FireCurrentManaModule : UniversalCurrentManaModule

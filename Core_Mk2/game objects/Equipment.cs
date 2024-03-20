@@ -17,7 +17,7 @@ namespace Core_Mk2
         //Часть тела, на которую можно надеть предмет
         public EBodyPart BodyPart { get; private set; }
         //список эффектов, реализующий действие снаряжения
-        public List<Effect> Effects { get; set; } = new List<Effect>();
+        public List<IEffect> Effects { get; set; } = new List<IEffect>();
         #endregion
 
         #region _____________________КОНСТРУКТОР_____________________

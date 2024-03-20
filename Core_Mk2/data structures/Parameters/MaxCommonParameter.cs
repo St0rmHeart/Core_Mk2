@@ -8,24 +8,29 @@ namespace Core_Mk2
 {
     /// <summary>
     /// Параметр, используемый для оперирования с <see cref="EDerivative.MaxHealth"/> и <see cref="EDerivative.MaxMana"/>.
-    /// При уменьшении своего значения, при необходимости уменьшает значение соответсвующего <see cref="CurrentParameter"/>.
+    /// При уменьшении своего значения, при необходимости уменьшает значение соответсвующего <see cref="CurrentCommonParameter"/>.
     /// </summary>
     public class MaxCommonParameter : CommonParameter
     {
-        public MaxCommonParameter(
-            Dictionary<ECharacteristic, ValueParameter> derivativeValueValues,
-            ECharacteristic characteristic,
-            EDerivative derivative,
-            CurrentParameter currentCommonParameter
-            )
-            : base(derivativeValueValues, characteristic, derivative) { _currentCommonParameter = currentCommonParameter; }
-        private readonly CurrentParameter _currentCommonParameter;
+        private readonly CurrentCommonParameter _currentCommonParameter;
 
-        protected override void SetFinalValue()
+        public MaxCommonParameter(
+            Dictionary<ECharacteristic, ValueParameter> derivativeValueValues, 
+            ECharacteristic characteristic, 
+            EDerivative derivative, 
+            CurrentCommonParameter currentCommonParameter)
+            : base(derivativeValueValues, characteristic, derivative) 
         {
-            FinalValue = ((_variables[0] * _variables[1] + _variables[2]) * _variables[3] + _variables[4]) * _variables[5] + _variables[6];
-            if ( _currentCommonParameter != null && _currentCommonParameter.CurrentValue > FinalValue)
+            _currentCommonParameter = currentCommonParameter;
+        }
+        
+        public override void SetFinalValue()
+        {
+            FinalValue = (((_variables[0] * _variables[1] + _variables[2]) * _variables[3] + _variables[4]) * _variables[5] + _variables[6]).Round();
+            if (_currentCommonParameter.CurrentValue > FinalValue)
+            {
                 _currentCommonParameter.CurrentValue = FinalValue;
+            }
         }
     }
 }
