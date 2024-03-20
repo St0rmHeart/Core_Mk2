@@ -24,20 +24,28 @@ namespace Core_Mk2
         /// Конструктор <see cref="ValueParameter"/>, просто присваивающий в <see cref="EVariable.A0"/> значение какой-либо характеристики <see cref="Character"/>.
         /// </summary>
         /// <param name="baseValue">Значение характеристики.</param>
-        public ValueParameter(float baseValue) { _variables[0] = baseValue; }
+        public ValueParameter(double baseValue)
+        {
+            _variables[0] = baseValue;
+        }
         #endregion
 
         #region _____________________МЕТОДЫ_____________________
         /// <summary>
-        /// Реализует изменение любой из переменных для рассчета <see cref="Parameter.FinalValue"/> с его динамическим изменением и уведомлением всех подписанных <see cref="CommonParameter"/>.
+        /// Реализует изменение любой из переменных для рассчета <see cref="Parameter.FinalValue"/> с изменением всех зависимых <see cref="CommonParameter"/>.
         /// </summary>
         /// <param name="variable">Имя переменой, которую нужно изменить.</param>
         /// <param name="value">Величина изменения.</param>
         /// <exception cref="ArgumentOutOfRangeException">В случае если переданы невозможные значения <see cref="EVariable.None"/> или <see cref="EVariable.A0"/></exception>
-        public override void ChangeVariable(EVariable variable, float value)
+        public override void ChangeVariable(EVariable variable, double value)
         {
-            if (variable == EVariable.None || variable == EVariable.A0) throw new ArgumentOutOfRangeException("Значение " + nameof(variable) + " недопустимо.");
-            _variables[(int)variable - 1] += value;
+            if (variable == EVariable.None || variable == EVariable.A0)
+            {
+                throw new ArgumentOutOfRangeException("Значение " + nameof(variable) + " недопустимо.");
+            }
+            var index = (int)variable - 1;
+            var newValue = _variables[index] + value;
+            _variables[index] = newValue.Round();
             SetFinalValue();
             ValueDerivativeUpdate?.Invoke(this, EventArgs.Empty);
         }

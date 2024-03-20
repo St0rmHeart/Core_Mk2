@@ -59,11 +59,27 @@ namespace Core_Mk2
                 //инициализация всех эффектов в снаряжении персонажа
                 foreach (Equipment item in pointer1.Character.Equipment.Values)
                 {
-                    foreach (TriggerParameterModifier effect in item.Effects)
+                    foreach (IEffect effect in item.Effects)
                     {
                         effect.Installation(pointer1, pointer2);
                     }
                 }
+            }
+            foreach (CharacterSlot characterSlot in initArray)
+            {
+                foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+                {
+                    characterSlot.Data[characteristic][EDerivative.Value].SetFinalValue();
+                }
+                foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+                {
+                    foreach (EDerivative derivative in CONSTANT_DATA.CHAR_DER_PAIRS[characteristic])
+                    {
+                        (characterSlot.Data[characteristic][derivative] as CommonParameter)?.UpdateA0();
+                    }
+                }
+                (characterSlot.Data[ECharacteristic.Endurance][EDerivative.CurrentHealth] as CurrentCommonParameter).CurrentValue = 
+                    characterSlot.Data[ECharacteristic.Endurance][EDerivative.MaxHealth].FinalValue; ;
             }
 
             //У кого из персонажей больше ловкость - тот и начинает ход первым
@@ -78,7 +94,6 @@ namespace Core_Mk2
         #endregion
 
         #region _____________________МЕТОДЫ_____________________
-
         /// <summary>
         /// Пока реализует совмещение активным игроком какой-либо комбинации камней, на игровой доске.
         /// </summary>

@@ -15,9 +15,6 @@ namespace Core_Mk2
         //модуль калькулятора, для рассчета А0
         private readonly CalculatorA0 _moduleA0;
 
-        /// <summary>
-        /// Конструктор, заполняющий все поля, определяющие функционирование параметра
-        /// </summary>
         /// <param name="derivativeValueValues">Ссылки на все <see cref="ValueParameter"/> персонажа.</param>
         /// <param name="characteristic">Характеристика <see cref="ECharacteristic"/>, к корторой относится данный <see cref="CommonParameter"/></param>
         /// <param name="derivative">Производная <see cref="EDerivative"/>, к корторой относится данный <see cref="CommonParameter"/></param>
@@ -25,7 +22,7 @@ namespace Core_Mk2
         {
             _moduleA0 = CalculatorA0.GetModule(characteristic, derivative, derivativeValueValues);
             //получение списка всех ValueParameter, на которые нужно подписаться
-            var subscriptionsList = ENUMS_CONSTANT_DATA.DERIVATIVE_SUBSCRIPTIONS[characteristic][derivative];
+            var subscriptionsList = CONSTANT_DATA.DERIVATIVE_SUBSCRIPTIONS[characteristic][derivative];
             foreach (var subscription in subscriptionsList)
             {
                 derivativeValueValues[subscription].ValueDerivativeUpdate += UpdateA0;
@@ -35,7 +32,16 @@ namespace Core_Mk2
         /// <summary>
         /// Обновляет значение переменной <see cref="EVariable.A0"/>, используя актуальные значения всех <see cref="ValueParameter"/>.
         /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         public void UpdateA0(object sender, EventArgs args)
+        {
+            UpdateA0();
+        }
+        /// <summary>
+        /// Обновляет значение переменной <see cref="EVariable.A0"/>, используя актуальные значения всех <see cref="ValueParameter"/>.
+        /// </summary>
+        public void UpdateA0()
         {
             _variables[0] = _moduleA0.CalculateA0();
             SetFinalValue();

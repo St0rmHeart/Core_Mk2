@@ -15,7 +15,7 @@ namespace Core_Mk2
         /// <summary>
         /// Структура: Характеристика <see cref="ECharacteristic"/>, её производная <see cref="EDerivative"/>, значение, представляемое <see cref="Parameter"/>
         /// </summary>
-        private Dictionary<ECharacteristic, Dictionary<EDerivative, Parameter>> _statList = new Dictionary<ECharacteristic, Dictionary<EDerivative, Parameter>>();
+        private readonly Dictionary<ECharacteristic, Dictionary<EDerivative, Parameter>> _statList = new Dictionary<ECharacteristic, Dictionary<EDerivative, Parameter>>();
         #endregion
 
         #region _____________________КОНСТРУКТОР_____________________
@@ -28,7 +28,7 @@ namespace Core_Mk2
             //словарь для хранения ссылок на все ValueParameter
             var valueParametersValues = new Dictionary<ECharacteristic, ValueParameter >();
             //Создаём все ValueParameter в _statList
-            foreach (ECharacteristic characteristic in ENUMS_CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+            foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
             {
                 _statList.Add(characteristic, new Dictionary<EDerivative, Parameter>());
                 var newValueParameter = new ValueParameter(character[characteristic]);
@@ -38,10 +38,10 @@ namespace Core_Mk2
 
             //Далее создаём в словаре все CurrentParameter, CommonParameter и MaxCommonParameter
 
-            foreach (ECharacteristic characteristic in ENUMS_CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+            foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
             {
                 //для каждой характеристки находим все производные, для котрых нужно создать Parameter;
-                List<EDerivative> derList = ENUMS_CONSTANT_DATA.CHAR_DER_PAIRS[characteristic];
+                List<EDerivative> derList = new List<EDerivative>(CONSTANT_DATA.CHAR_DER_PAIRS[characteristic]);
                 derList.Remove(EDerivative.Value);
                 derList.Remove(EDerivative.MaxMana);
                 derList.Remove(EDerivative.MaxHealth);
@@ -51,13 +51,13 @@ namespace Core_Mk2
                     switch (derivative)
                     {
                         case EDerivative.CurrentMana:
-                            var currentMana = new CurrentParameter(valueParametersValues, characteristic, EDerivative.CurrentMana);
+                            var currentMana = new CurrentCommonParameter(valueParametersValues, characteristic, EDerivative.CurrentMana);
                             var maxMana = new MaxCommonParameter(valueParametersValues, characteristic, EDerivative.MaxMana, currentMana);
                             _statList[characteristic].Add(EDerivative.MaxMana, maxMana);
                             _statList[characteristic].Add(EDerivative.CurrentMana, currentMana);
                             break;
                         case EDerivative.CurrentHealth:
-                            var currentHealth = new CurrentParameter(valueParametersValues, ECharacteristic.Endurance, EDerivative.CurrentHealth);
+                            var currentHealth = new CurrentCommonParameter(valueParametersValues, ECharacteristic.Endurance, EDerivative.CurrentHealth);
                             var maxHealth = new MaxCommonParameter(valueParametersValues, ECharacteristic.Endurance, EDerivative.MaxHealth, currentHealth);
                             _statList[characteristic].Add(EDerivative.MaxHealth, maxHealth);
                             _statList[characteristic].Add(EDerivative.CurrentHealth, currentHealth);

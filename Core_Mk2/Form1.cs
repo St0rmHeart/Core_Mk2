@@ -170,116 +170,161 @@ namespace Core_Mk2
             }
         }
         #region Log methods
-        private void LogStepExecution(object sender, EventArgs args)
+        private void LogStepExecution(object sender, EEvent args)
         {
             if (sender is CharacterSlot owner)
             {
                 listBox1.Items.Add(owner.GetName + " закончил ход!");
             }
         }
-        private void LogDeath(object sender, EventArgs args)
+        private void LogDeath(object sender, EEvent args)
         {
             if (sender is CharacterSlot owner)
             {
                 listBox1.Items.Add(owner.GetName + "УМЕР!");
             }
         }
-        private void LogDamageEmitting(object sender, (EDamageType damageType, float value) data)
+        private void LogDamageEmitting(object sender, (EEvent, EDamageType damageType, double value) data)
         {
             if (sender is CharacterSlot owner)
             {
                 listBox1.Items.Add(owner.GetName + " испускает " + data.value.ToString("F1") + " едениц " + data.damageType + " урона.");
             }
         }
-        private void LogDamageBlocking(object sender, (EDamageType damageType, float value) data)
+        private void LogDamageBlocking(object sender, (EEvent, EDamageType damageType, double value) data)
         {
             if (sender is CharacterSlot owner)
             {
                 listBox1.Items.Add(owner.GetName + " блокирует " + data.value.ToString("F1") + " едениц " + data.damageType + " урона.");
             }
         }
-        private void LogDamageTaking(object sender, (EDamageType damageType, float value) data)
+        private void LogDamageTaking(object sender, (EEvent, EDamageType damageType, double value) data)
         {
             if (sender is CharacterSlot owner)
             {
                 listBox1.Items.Add(owner.GetName + " получает " + (-data.value).ToString("F1") + " едениц " + data.damageType + " урона.");
             }
         }
-        private void LogDeltaXP(object sender,  float value)
+        private void LogDeltaXP(object sender, (EEvent, double value) arg)
         {
             if (sender is CharacterSlot owner)
             {
-                if (value > 0 ) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " опыта ");
-                else listBox1.Items.Add(owner.GetName + " теряет " + (-value).ToString("F1") + " опыта ");
+                if (arg.value > 0 ) listBox1.Items.Add(owner.GetName + " получает " + arg.value.ToString("F1") + " опыта ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + (-arg.value).ToString("F1") + " опыта ");
             }
         }
-        private void LogDeltaHP(object sender, float value)
+        private void LogDeltaHP(object sender, (EEvent, double value) arg)
         {
             if (sender is CharacterSlot owner)
             {
-                if (value > 0) listBox1.Items.Add(owner.GetName + " восстанавливает " + value.ToString("F1") + " здоровья ");
-                else listBox1.Items.Add(owner.GetName + " теряет " + (-value).ToString("F1") + " здоровья ");
+                if (arg.value > 0) listBox1.Items.Add(owner.GetName + " восстанавливает " + arg.value.ToString("F1") + " здоровья ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + (-arg.value).ToString("F1") + " здоровья ");
             }
         }
-        private void LogDeltaGold(object sender, float value)
+        private void LogDeltaGold(object sender, (EEvent, double value) arg)
         {
             if (sender is CharacterSlot owner)
             {
-                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " золота ");
-                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " золота ");
+                if (arg.value > 0) listBox1.Items.Add(owner.GetName + " получает " + arg.value.ToString("F1") + " золота ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + arg.value.ToString("F1") + " золота ");
             }
         }
-        private void LogDeltaFireMana(object sender, float value)
+        private void LogDeltaFireMana(object sender, (EEvent, double value) arg)
         {
             if (sender is CharacterSlot owner)
             {
-                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " маны огня ");
-                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " маны огня ");
+                if (arg.value > 0) listBox1.Items.Add(owner.GetName + " получает " + arg.value.ToString("F1") + " маны огня ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + arg.value.ToString("F1") + " маны огня ");
             }
         }
-        private void LogDeltaWaterMana(object sender, float value)
+        private void LogDeltaWaterMana(object sender, (EEvent, double value) arg)
         {
             if (sender is CharacterSlot owner)
             {
-                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " маны воды ");
-                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " маны воды ");
+                if (arg.value > 0) listBox1.Items.Add(owner.GetName + " получает " + arg.value.ToString("F1") + " маны воды ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + arg.value.ToString("F1") + " маны воды ");
             }
         }
-        private void LogDeltaEarthMana(object sender, float value)
+        private void LogDeltaEarthMana(object sender, (EEvent, double value) arg)
         {
             if (sender is CharacterSlot owner)
             {
-                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " маны земли ");
-                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " маны земли ");
+                if (arg.value > 0) listBox1.Items.Add(owner.GetName + " получает " + arg.value.ToString("F1") + " маны земли ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + arg.value.ToString("F1") + " маны земли ");
             }
         }
-        private void LogDeltaAirMana(object sender, float value)
+        private void LogDeltaAirMana(object sender, (EEvent, double value) arg)
         {
             if (sender is CharacterSlot owner)
             {
-                if (value > 0) listBox1.Items.Add(owner.GetName + " получает " + value.ToString("F1") + " маны воздуха ");
-                else listBox1.Items.Add(owner.GetName + " теряет " + value.ToString("F1") + " маны воздуха ");
+                if (arg.value > 0) listBox1.Items.Add(owner.GetName + " получает " + arg.value.ToString("F1") + " маны воздуха ");
+                else listBox1.Items.Add(owner.GetName + " теряет " + arg.value.ToString("F1") + " маны воздуха ");
             }
         }
         #endregion
         public Form1()
         {
-            var characterBuilder = new Character.CBuilder();
-            var effectBuilder = new EffectBuilder();
+            var CBuilder = new Character.CBuilder();
+            var PPMBuilder = new PassiveParameterModifier.PPMBuilder();
+            var TPMBuilder = new TriggerParameterModifier.TPMBuilder();
+            var LMEBuilder = new LogicalModuleEffect.LMEBuilder();
+
 
             var sword = new Equipment(EBodyPart.Weapon, "Древний Эльфийский Меч");
-            TriggerParameterModifier newEffect = effectBuilder
-                .WithValue(10)
-                .WithDuration(5)
-                .WithTriggerThreshold(8)
-                .WithMaxStack(3)
-                .WithLink(EPlayerType.Self, ECharacteristic.Strength, EDerivative.Value, EVariable.C2)
-                .WithTriggerEvent(EPlayerType.Self, EEvent.DeltaGold)
-                .WithTickEvent(EPlayerType.Self, EEvent.StepExecution)
-                .Build();
-            sword.Effects.Add(newEffect);
 
-            testHero = characterBuilder
+            var newPassiveEffect = PPMBuilder
+                .Name("Живучесть.")
+                .Description("Увеличивает максимальное здоровье на 10.")
+                .ComposeLink(EPlayerType.Self)
+                .ComposeLink(ECharacteristic.Endurance)
+                .ComposeLink(EDerivative.MaxHealth)
+                .ComposeLink(EVariable.C2)
+                .AddLink()
+                .AddValue(10)
+                .BuildWithReset();
+            sword.Effects.Add(newPassiveEffect);
+
+            var newTriggerParameter = TPMBuilder
+                .Name("Наростающая ярость.")
+                .Description(
+                    "При нанесении более 7 едениц физического урона ваша сила увеличиваете на 5% на 2 хода.\n" +
+                    "Может складываться до 4х раз.")
+                .TriggerlogicalModule(new LM_02_damageThreshold(damageType: EDamageType.PhysicalDamage, threshold: 7))
+                .TicklogicalModule(new LM_CONSTANT_TRUE())
+                .Duration(2)
+                .MaxStack(4)
+                .ComposeLink(EPlayerType.Self)
+                .ComposeLink(ECharacteristic.Strength)
+                .ComposeLink(EDerivative.Value)
+                .ComposeLink(EVariable.C1)
+                .AddLink()
+                .AddValue(0.05f)
+                .ComposeTriggerEvent(EPlayerType.Enemy)
+                .ComposeTriggerEvent(EEvent.DamageTaking)
+                .AddTriggerEvent()
+                .ComposeTickEvent(EPlayerType.Self)
+                .ComposeTickEvent(EEvent.StepExecution)
+                .AddTickEventt()
+                .Build();
+            sword.Effects.Add(newTriggerParameter);
+
+            var newLogicalModuleEffect = LMEBuilder
+                .Name("Стена огня")
+                .Description(
+                    "!!ДЛЯ ТЕСТА!! При поглощении маны земли. !!ДЛЯ ТЕСТА!!\n" +
+                    "Теперь урон наносится вашей красной мане. Каждый ход уменьшает запас красной маны на 2." +
+                    "Длится пока красная мана не опустится до нуля.")
+                .TriggerlogicalModule( new LM_01_deltaThreshold(threshold: 0))
+                .TicklogicalModule(new LM_03_manaShieldTickModule(element: ECharacteristic.Fire, costOfMaintenance: 2))
+                .AddTriggerEvent(EPlayerType.Self, EEvent.DeltaEarthMana)
+                .AddTickEventt(EPlayerType.Self, EEvent.DamageAccepting)
+                .AddTickEventt(EPlayerType.Self, EEvent.StepExecution)
+                .Build();
+            sword.Effects.Add(newLogicalModuleEffect);
+
+
+
+            testHero = CBuilder
                 .With_Name("Огн. Рыцарь")
                 .With_XP(1874)
                 .With_Characteristic(ECharacteristic.Strength, 55)
@@ -292,9 +337,9 @@ namespace Core_Mk2
                 .With_Equipment(sword.BodyPart, sword)
                 .Build();
 
-            characterBuilder.Reset();
+            CBuilder.Reset();
 
-            testEnemy = characterBuilder
+            testEnemy = CBuilder
                 .With_Name("Тролль")
                 .With_XP(3000)
                 .With_Characteristic(ECharacteristic.Strength, 130)

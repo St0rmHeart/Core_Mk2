@@ -9,24 +9,20 @@ namespace Core_Mk2
     /// <summary>
     /// Параметр, используемый для оперирования с <see cref="EDerivative.CurrentHealth"/> и <see cref="EDerivative.CurrentMana"/>
     /// </summary>
-    public class CurrentParameter : Parameter
+    public class CurrentCommonParameter : CommonParameter
     {
-        /// <summary>
-        /// Сонструктор задающий А0
-        /// </summary>
         /// <param name="derivativeValueValues">Ссылки на все <see cref="ValueParameter"/> персонажа.</param>
         /// <param name="characteristic">Характеристика <see cref="ECharacteristic"/>, к корторой относится данный <see cref="CommonParameter"/></param>
         /// <param name="derivative">Производная <see cref="EDerivative"/>, к корторой относится данный <see cref="CommonParameter"/></param>
-        public CurrentParameter(Dictionary<ECharacteristic, ValueParameter> derivativeValueValues,
+        public CurrentCommonParameter(
+            Dictionary<ECharacteristic, ValueParameter> derivativeValueValues,
             ECharacteristic characteristic,
-            EDerivative derivative) : base()
-        {
-            _variables[0] = CalculatorA0.GetModule(characteristic, derivative, derivativeValueValues).CalculateA0();
-        }
+            EDerivative derivative) : base (derivativeValueValues, characteristic, derivative) 
+        { }
 
         #region ______________________СВОЙСТВА______________________
         //Геттер и сеттер для "Current" производых
-        public float CurrentValue { get { return FinalValue; } set { FinalValue = value; } }
+        public double CurrentValue { get { return FinalValue; } set { FinalValue = value; } }
         #endregion
     }
 }

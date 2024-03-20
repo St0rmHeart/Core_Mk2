@@ -101,11 +101,13 @@ namespace Core_Mk2
         MaxHealth,      //максимальный запас здоровья
         CurrentHealth,  //текущий(стартовый) запас здоровья
     }
-    public static class ENUMS_CONSTANT_DATA
+    public static class CONSTANT_DATA
     {
-        static ENUMS_CONSTANT_DATA()
-        {
+        public static readonly int ACCURACY_OF_CALCULATIONS = 4;
 
+        public static double Round(this double value)
+        {
+            return Math.Round(value, ACCURACY_OF_CALCULATIONS);
         }
 
         public static readonly Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>> DERIVATIVE_SUBSCRIPTIONS = new Dictionary<ECharacteristic, Dictionary<EDerivative, List<ECharacteristic>>>()
@@ -159,6 +161,13 @@ namespace Core_Mk2
                             ECharacteristic.Endurance
                         }
                     },
+
+                    {
+                        EDerivative.CurrentHealth, new List<ECharacteristic>()
+                        {
+                            
+                        }
+                    },
                 }
             },
 
@@ -206,6 +215,13 @@ namespace Core_Mk2
                     },
 
                     {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+                            
+                        }
+                    },
+
+                    {
                         EDerivative.Resistance, new List<ECharacteristic>()
                         {
                             ECharacteristic.Fire
@@ -235,6 +251,13 @@ namespace Core_Mk2
                         EDerivative.MaxMana, new List<ECharacteristic>()
                         {
                             ECharacteristic.Water
+                        }
+                    },
+
+                    {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+
                         }
                     },
 
@@ -272,6 +295,13 @@ namespace Core_Mk2
                     },
 
                     {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+
+                        }
+                    },
+
+                    {
                         EDerivative.Resistance, new List<ECharacteristic>()
                         {
                             ECharacteristic.Earth
@@ -301,6 +331,13 @@ namespace Core_Mk2
                         EDerivative.MaxMana, new List<ECharacteristic>()
                         {
                             ECharacteristic.Air
+                        }
+                    },
+
+                    {
+                        EDerivative.CurrentMana, new List<ECharacteristic>()
+                        {
+
                         }
                     },
 
@@ -395,6 +432,8 @@ namespace Core_Mk2
                 }
             },
         };
+
+
     }
 
     /// <summary>

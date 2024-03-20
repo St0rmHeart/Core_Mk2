@@ -18,9 +18,4 @@ namespace Core_Mk2
     {
         public bool CheckCondition(CharacterSlot owner, CharacterSlot enemy);
     }
-
-    public interface IPPM
-    {
-        public bool CheckCondition(CharacterSlot owner, CharacterSlot enemy);
-    }
 }

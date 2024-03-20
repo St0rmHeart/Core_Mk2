@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Core_Mk2
 {
     /// <summary>
@@ -17,28 +18,27 @@ namespace Core_Mk2
 
         public string Description { get; private set; }
 
-        private readonly List<float> _values;
+        private readonly List<double> _values;
 
         private readonly List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> _links;
 
-        private PassiveParameterModifier(string name, string description, List<float> values, List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> links)
+        private PassiveParameterModifier(
+            string name,
+            string description,
+            List<double> values,
+            List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> links)
         {
             Name = name;
             Description = description;
-            _values = values;
-            _links = links;
+            _values = new List<double>(values);
+            _links = new List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)>(links);
         }
         public void Installation(CharacterSlot owner, CharacterSlot enemy)
         {
             for (int i = 0; i < _values.Count; i++)
             {
                 var link = _links[i];
-                var target = (link.target) switch
-                {
-                    EPlayerType.Self => owner,
-                    EPlayerType.Enemy => enemy,
-                    _ => throw new NotImplementedException(),
-                };
+                var target = (link.target == EPlayerType.Self) ? owner : enemy;
                 var currentParameter = target.Data[link.characteristic][link.derivative];
                 currentParameter.ChangeVariable(link.variable, _values[i]);
             }
@@ -46,19 +46,15 @@ namespace Core_Mk2
 
         public IEffect Clone()
         {
-            return new PassiveParameterModifier(Name, Description, new List<float>(_values), new List<(EPlayerType, ECharacteristic, EDerivative, EVariable)>(_links));
+            return new PassiveParameterModifier(Name, Description, _values, _links);
         }
-
-
-
-
         public class PPMBuilder
         {
             private string _name;
 
             private string _description;
 
-            private readonly List<float> _values = new List<float>();
+            private readonly List<double> _values = new List<double>();
 
             private readonly List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> _links = new List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)>();
 
@@ -70,8 +66,10 @@ namespace Core_Mk2
 
             private EVariable _variable;
 
-            public PPMBuilder() { Reset(); }
-
+            public PPMBuilder()
+            {
+                Reset();
+            }
             public PPMBuilder Reset()
             {
                 _name = null;
@@ -84,12 +82,20 @@ namespace Core_Mk2
                 _variable = EVariable.None;
                 return this;
             }
+            public PPMBuilder Name(string value)
+            {
+                _name = value; return this;
+            }
+            public PPMBuilder Description(string value)
+            {
+                _description = value;
+                return this;
+            }
             public PPMBuilder ComposeLink(string name)
             {
                 _name = name;
                 return this;
             }
-
             public PPMBuilder ComposeLink(EPlayerType target)
             {
                 _target = target;
@@ -107,22 +113,32 @@ namespace Core_Mk2
             }
             public PPMBuilder ComposeLink(EVariable variable)
             {
+                if (variable == EVariable.A0) throw new ArgumentException("Нельзя модифицировать A0 переменную");
                 _variable = variable;
                 return this;
             }
-            public PPMBuilder SetLink()
+            public PPMBuilder AddLink()
             {
                 if (_target == EPlayerType.None || _characteristic == ECharacteristic.None || _derivative == EDerivative.None || _variable == EVariable.None)
+                {
                     throw new ArgumentException("Один из элементов ссылки не заполнен");
-                if (!ENUMS_CONSTANT_DATA.CHAR_DER_PAIRS[_characteristic].Contains(_derivative))
+                }
+                if (!CONSTANT_DATA.CHAR_DER_PAIRS[_characteristic].Contains(_derivative))
+                {
                     throw new ArgumentException("Невозможная ссылка. У " + nameof(_characteristic) + " нет производной " + nameof(_derivative) + ".");
-                if (_variable == EVariable.A0)
-                    throw new ArgumentException("Нельзя модифицировать A0 переменную");
+                }
 
-                _links.Add((_target, _characteristic, _derivative, _variable));
+                var newLink = (_target, _characteristic, _derivative, _variable);
+
+                if (_links.Contains(newLink))
+                {
+                    throw new ArgumentException("Указанная ссылка уже существует.");
+                }
+
+                _links.Add(newLink);
                 return this;
             }
-            public PPMBuilder AddValue(float value)
+            public PPMBuilder AddValue(double value)
             {
                 _values.Add(value);
                 return this;
@@ -134,18 +150,16 @@ namespace Core_Mk2
                 if (_values.Count == 0) throw new ArgumentException("Отсутствует значение эффекта.");
                 if (_links.Count == 0) throw new ArgumentException("Отсутствует ссылка.");
 
-                List<float> values;
+                List<double> values;
                 if (_values.Count == 1)
                 {
-                    values = new List<float>(new int[_links.Count].Select(x => _values[0]));
+                    values = new List<double>(new int[_links.Count].Select(x => _values[0]));
                 }
                 else
                 {
-                    if (_values.Count != _links.Count)
-                        throw new ArgumentException("Количество значений должно быть либо равно 1, рибо быть равным количеству ссылок");
+                    if (_values.Count != _links.Count) throw new ArgumentException("_values.Count должно быть либо равно 1, рибо быть равным _links.Count");
                     values = _values;
                 }
-
                 return new PassiveParameterModifier(_name, _description, values, _links);
             }
             public PassiveParameterModifier BuildWithReset()

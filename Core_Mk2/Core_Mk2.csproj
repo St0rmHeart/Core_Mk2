@@ -47,18 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="data structures\CBuilder.cs" />
     <Compile Include="data structures\CharacterSlot.cs" />
     <Compile Include="data structures\DamageModule.cs" />
     <Compile Include="data structures\Interfaces.cs" />
     <Compile Include="data structures\logical modules\LogicalModule.cs" />
     <Compile Include="data structures\Parameters\CommonParameter.cs" />
-    <Compile Include="data structures\Parameters\CurrentParameter.cs" />
+    <Compile Include="data structures\Parameters\CurrentCommonParameter.cs" />
     <Compile Include="data structures\Parameters\MaxCommonParameter.cs" />
     <Compile Include="data structures\Parameters\Parameter.cs" />
     <Compile Include="data structures\CalculatorA0.cs" />
     <Compile Include="data structures\DerivativesEnumeration.cs" />
-    <Compile Include="data structures\EffectBuilder.cs" />
     <Compile Include="data structures\enums.cs" />
     <Compile Include="data structures\Parameters\ValueParameter.cs" />
     <Compile Include="data structures\TurnSwitch.cs" />
@@ -70,6 +68,7 @@
     </Compile>
     <Compile Include="game objects\Arena.cs" />
     <Compile Include="game objects\Character.cs" />
+    <Compile Include="game objects\effects\LogicalModuleEffect.cs" />
     <Compile Include="game objects\effects\TriggerParameterModifier.cs" />
     <Compile Include="game objects\effects\PassiveParameterModifier.cs" />
     <Compile Include="game objects\Equipment.cs" />
