@@ -24,12 +24,7 @@ namespace Core_Mk2
         //
         private DamageModule _damageModule = new DamageModule();
 
-        //
-        private const int GridSize = 8;
-        //
-        private EStoneType[,] StoneGrid = new EStoneType[GridSize,GridSize];
-        //
-        private Random RandomStoneGenerator = new Random();
+
         #endregion
 
         #region ______________________КОНСТРУКТОР______________________
@@ -111,114 +106,6 @@ namespace Core_Mk2
                 _activePlayer.CompleteStep();
                 (_passivePlayer, _activePlayer) = (_activePlayer, _passivePlayer);
             }
-        }
-        public EStoneType RandomStone()
-        {
-            int rndI = RandomStoneGenerator.Next(7);
-            switch (rndI)
-            {
-                case 0:
-                    return EStoneType.Skull;
-                case 1:
-                    return EStoneType.Gold;
-                case 2:
-                    return EStoneType.Experience;
-                case 3:
-                    return EStoneType.FireStone;
-                case 4:
-                    return EStoneType.WaterStone;
-                case 5:
-                    return EStoneType.AirStone;
-                case 6:
-                    return EStoneType.EarthStone;
-                default:
-                    return EStoneType.Skull;
-            }
-        }
-        public void InitializeGrid()
-        {
-            for (int i = 0; i < GridSize; i++)
-                for (int j = 0; j < GridSize; j++)
-                    StoneGrid[i,j] = RandomStone();
-        }
-        public void StoneFall(int x , int y)
-        {
-            for (int i = y;  i > 0; i--)
-                StoneGrid[x, i] = StoneGrid[x, i-1];
-            StoneGrid[x, 0] = RandomStone();
-        }
-        public void RemoveStones(List<int> RemovedStonesX, List<int> RemovedStonesY)
-        {
-            for (int i = 0; i < RemovedStonesX.Count(); i++)
-                StoneFall(RemovedStonesX[i], RemovedStonesY[i]);
-        }
-        public void CheckForCombination(int x, int y)
-        {
-            EStoneType InitStoneType = StoneGrid[x,y];
-            int CombinationSizeX = 0;
-            List<int> CSXX = new List<int>();
-            List<int> CSXY = new List<int>();
-            List<int> CSYX = new List<int>();
-            List<int> CSYY = new List<int>();
-            int CombinationSizeY = 0;
-            for (int i = Math.Max(x - 2, 0); i < Math.Min(x + 2, GridSize); i++)
-                if (StoneGrid[i, y] == InitStoneType)
-                {
-                    CombinationSizeX++;
-                    CSXX.Add(i);
-                    CSXY.Add(y);
-                }
-                else
-                {
-                    CombinationSizeX = 0;
-                    CSXX.Clear();
-                    CSXY.Clear();
-                }
-            for (int i = Math.Max(y - 2, 0); i < Math.Min(y + 2, GridSize); i++)
-                if (StoneGrid[x, i] == InitStoneType)
-                {
-                    CombinationSizeY++;
-                    CSYX.Add(x);
-                    CSYY.Add(i);
-                }
-                else
-                {
-                    CombinationSizeY = 0;
-                    CSYX.Clear();
-                    CSYY.Clear();
-                }
-            if (CombinationSizeX >= 3)
-            {
-                StoneCombination(InitStoneType, CombinationSizeX);
-                RemoveStones(CSXX, CSXY);
-                ScanField();
-            }
-            if (CombinationSizeY >= 3)
-            {
-                StoneCombination(InitStoneType, CombinationSizeY);
-                RemoveStones(CSYX, CSYY);
-                ScanField();
-            }
-        }
-        public void ScanField()
-        {
-            for (int i = 0; i < GridSize; i++)
-                for (int j = 0; j < GridSize; j++)
-                    CheckForCombination(i, j);
-        }
-        public void SwapStones(int x1, int y1, int x2, int y2)
-        {
-            var temp = StoneGrid[x1, y1];
-            StoneGrid[x1, y1] = StoneGrid[x2, y2];
-            StoneGrid[x2,y2] = temp;
-        }
-        public int GetGridSize()
-        {
-            return GridSize;
-        }
-        public EStoneType[,] GetStoneGrid()
-        {
-            return StoneGrid;
         }
         #endregion
     }
