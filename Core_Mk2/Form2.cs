@@ -1,4 +1,4 @@
-﻿using Core_Mk2.Properties;
+using Core_Mk2.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,43 +13,23 @@ namespace Core_Mk2
 {
     public partial class Form2 : Form
     {
-        public Arena arena;
+        public Arena _arena;
         public TableLayoutPanel StoneGrid;
-        public Image SkullImage = Resources.SkullIcon;
-        public Image GoldImage = Resources.GoldIcon;
-        public Image XPImage = Resources.XPIcon;
-        public Image AirImage = Resources.AirIcon;
-        public Image FireImage = Resources.FireIcon;
-        public Image WaterImage = Resources.WaterIcon;
-        public Image EarthImage = Resources.EarthIcon;
         private TableLayoutPanelCellPosition SelectedStonePosition = new TableLayoutPanelCellPosition(-1, -1);
         //
         private const int GridSize = 8;
         //
         private EStoneType[,] StoneGridArray = new EStoneType[GridSize, GridSize];
         //
-        private Random RandomStoneGenerator = new Random();
-        private int[] OffsetX = { -1, 0, 0, 1 };
-        private int[] OffsetY = { 0, 1, -1, 0 };
-        public Form2()
+        private Random _random = new Random();
+        private readonly int[] OffsetX = { -1, 0, 0, 1 };
+        private readonly int[] OffsetY = { 0, 1, -1, 0 };
+       
+        public Form2(Arena arena)
         {
             InitializeComponent();
             InitializeGrid();
-
-            StoneGrid = new System.Windows.Forms.TableLayoutPanel();
-            StoneGrid.AutoSize = true;
-            StoneGrid.ColumnCount = GridSize;
-            StoneGrid.RowCount = GridSize;
-            StoneGrid.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-            StoneGrid.Location = new System.Drawing.Point(10, 10);
-            StoneGrid.Show();
-            Controls.Add(StoneGrid);
-        }
-        public Form2(Arena arena1)
-        {
-            InitializeComponent();
-            InitializeGrid();
-            arena = arena1;
+            _arena = arena;
             StoneGrid = new System.Windows.Forms.TableLayoutPanel();
             StoneGrid.AutoSize = true;
             StoneGrid.ColumnCount = GridSize;
@@ -62,32 +42,35 @@ namespace Core_Mk2
 
         public EStoneType RandomStone()
         {
-            int rndI = RandomStoneGenerator.Next(7);
-            switch (rndI)
-            {
-                case 0:
-                    return EStoneType.Skull;
-                case 1:
-                    return EStoneType.Gold;
-                case 2:
-                    return EStoneType.Experience;
-                case 3:
-                    return EStoneType.FireStone;
-                case 4:
-                    return EStoneType.WaterStone;
-                case 5:
-                    return EStoneType.AirStone;
-                case 6:
-                    return EStoneType.EarthStone;
-                default:
-                    return EStoneType.Skull;
-            }
+            return (EStoneType)_random.Next(1, 8);
         }
         public void InitializeGrid()
         {
             for (int i = 0; i < GridSize; i++)
+            {
                 for (int j = 0; j < GridSize; j++)
+                {
                     StoneGridArray[i, j] = RandomStone();
+                }
+            }
+            // Проверка и корректировка значений
+            for (int i = 0; i < GridSize; i++)
+            {
+                for (int j = 0; j < GridSize; j++)
+                {
+                    // Проверка по горизонтали
+                    while (j > 1 && StoneGridArray[i, j] == StoneGridArray[i, j - 1] && StoneGridArray[i, j] == StoneGridArray[i, j - 2])
+                    {
+                        StoneGridArray[i, j] = RandomStone();
+                    }
+
+                    // Проверка по вертикали
+                    while (i > 1 && StoneGridArray[i, j] == StoneGridArray[i - 1, j] && StoneGridArray[i, j] == StoneGridArray[i - 2, j])
+                    {
+                        StoneGridArray[i, j] = RandomStone();
+                    }
+                }
+            }
         }
         public void StoneFall(int x, int y)
         {
@@ -137,13 +120,13 @@ namespace Core_Mk2
                 }
             if (CombinationSizeX >= 3)
             {
-                arena.StoneCombination(InitStoneType, CombinationSizeX);
+                _arena.StoneCombination(InitStoneType, CombinationSizeX);
                 RemoveStones(CSXX, CSXY);
                 ScanField();
             }
             if (CombinationSizeY >= 3)
             {
-                arena.StoneCombination(InitStoneType, CombinationSizeY);
+                _arena.StoneCombination(InitStoneType, CombinationSizeY);
                 RemoveStones(CSYX, CSYY);
                 ScanField();
             }
@@ -171,25 +154,17 @@ namespace Core_Mk2
         }
         private Image GetPicture(EStoneType stoneType)
         {
-            switch (stoneType)
+            return stoneType switch
             {
-                case EStoneType.Skull:
-                    return SkullImage;
-                case EStoneType.Gold:
-                    return GoldImage;
-                case EStoneType.Experience:
-                    return XPImage;
-                case EStoneType.FireStone:
-                    return FireImage;
-                case EStoneType.WaterStone:
-                    return WaterImage;
-                case EStoneType.AirStone:
-                    return AirImage;
-                case EStoneType.EarthStone:
-                    return EarthImage;
-                default:
-                    return SkullImage;
-            }
+                EStoneType.Skull => Resources.SkullIcon,
+                EStoneType.Gold => Resources.GoldIcon,
+                EStoneType.Experience => Resources.XPIcon,
+                EStoneType.FireStone => Resources.FireIcon,
+                EStoneType.WaterStone => Resources.WaterIcon,
+                EStoneType.AirStone => Resources.AirIcon,
+                EStoneType.EarthStone => Resources.EarthIcon,
+                _ => null,
+            };
         }
         private void StoneClick(object sender, EventArgs e)
         {

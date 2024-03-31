@@ -57,7 +57,6 @@ namespace Core_Mk2
         WaterStone = ECharacteristic.Water,
         AirStone = ECharacteristic.Air,
         EarthStone = ECharacteristic.Earth,
-
     }
     /// <summary>
     /// Указатели для адресации к игроку или противнику игрока
