@@ -28,7 +28,7 @@ namespace Core_Mk2
             //словарь для хранения ссылок на все ValueParameter
             var valueParametersValues = new Dictionary<ECharacteristic, ValueParameter >();
             //Создаём все ValueParameter в _statList
-            foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+            foreach (ECharacteristic characteristic in CONSTANT.CHAR_DER_PAIRS.Keys)
             {
                 _statList.Add(characteristic, new Dictionary<EDerivative, Parameter>());
                 var newValueParameter = new ValueParameter(character[characteristic]);
@@ -38,10 +38,10 @@ namespace Core_Mk2
 
             //Далее создаём в словаре все CurrentParameter, CommonParameter и MaxCommonParameter
 
-            foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+            foreach (ECharacteristic characteristic in CONSTANT.CHAR_DER_PAIRS.Keys)
             {
                 //для каждой характеристки находим все производные, для котрых нужно создать Parameter;
-                List<EDerivative> derList = new List<EDerivative>(CONSTANT_DATA.CHAR_DER_PAIRS[characteristic]);
+                List<EDerivative> derList = new List<EDerivative>(CONSTANT.CHAR_DER_PAIRS[characteristic]);
                 derList.Remove(EDerivative.Value);
                 derList.Remove(EDerivative.MaxMana);
                 derList.Remove(EDerivative.MaxHealth);

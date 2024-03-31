@@ -14,25 +14,23 @@ namespace Core_Mk2
     /// </summary>
     public class PassiveParameterModifier : IEffect
     {
-        public string Name { get; private set; }
-
-        public string Description { get; private set; }
-
-        private readonly List<double> _values;
-
-        private readonly List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> _links;
-
         private PassiveParameterModifier(
             string name,
             string description,
             List<double> values,
-            List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> links)
+            List<(EPlayerType, ECharacteristic, EDerivative, EVariable)> links)
         {
             Name = name;
             Description = description;
-            _values = new List<double>(values);
-            _links = new List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)>(links);
+            _values = values;
+            _links = links;
         }
+
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        private readonly List<double> _values;
+        private readonly List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> _links;
+
         public void Installation(CharacterSlot owner, CharacterSlot enemy)
         {
             for (int i = 0; i < _values.Count; i++)
@@ -46,8 +44,17 @@ namespace Core_Mk2
 
         public IEffect Clone()
         {
-            return new PassiveParameterModifier(Name, Description, _values, _links);
+            return new PassiveParameterModifier(
+                Name,
+                Description,
+                new List<double>(_values),
+                new List<(EPlayerType, ECharacteristic, EDerivative, EVariable)>(_links));
         }
+
+
+
+
+
         public class PPMBuilder
         {
             private string _name;
@@ -56,7 +63,7 @@ namespace Core_Mk2
 
             private readonly List<double> _values = new List<double>();
 
-            private readonly List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> _links = new List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)>();
+            private readonly List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> _links = new List<(EPlayerType, ECharacteristic, EDerivative, EVariable)>();
 
             private EPlayerType _target;
 
@@ -123,7 +130,7 @@ namespace Core_Mk2
                 {
                     throw new ArgumentException("Один из элементов ссылки не заполнен");
                 }
-                if (!CONSTANT_DATA.CHAR_DER_PAIRS[_characteristic].Contains(_derivative))
+                if (!CONSTANT.CHAR_DER_PAIRS[_characteristic].Contains(_derivative))
                 {
                     throw new ArgumentException("Невозможная ссылка. У " + nameof(_characteristic) + " нет производной " + nameof(_derivative) + ".");
                 }
@@ -157,10 +164,17 @@ namespace Core_Mk2
                 }
                 else
                 {
-                    if (_values.Count != _links.Count) throw new ArgumentException("_values.Count должно быть либо равно 1, рибо быть равным _links.Count");
+                    if (_values.Count != _links.Count)
+                    {
+                        throw new ArgumentException("_values.Count должно быть либо равно 1, рибо быть равным _links.Count");
+                    }
                     values = _values;
                 }
-                return new PassiveParameterModifier(_name, _description, values, _links);
+                return new PassiveParameterModifier(
+                    _name,
+                    _description,
+                    new List<double>(values),
+                    new List<(EPlayerType, ECharacteristic, EDerivative, EVariable)>(_links));
             }
             public PassiveParameterModifier BuildWithReset()
             {

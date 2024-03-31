@@ -80,7 +80,7 @@ namespace Core_Mk2
         {
             Name = name;
             Level = 1;
-            foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+            foreach (ECharacteristic characteristic in CONSTANT.CHAR_DER_PAIRS.Keys)
             {
                 Characteristics.Add(characteristic, 0);
             }
@@ -211,7 +211,7 @@ namespace Core_Mk2
                 _name = "";
                 _xp = 0;
                 _characteristics.Clear();
-                foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+                foreach (ECharacteristic characteristic in CONSTANT.CHAR_DER_PAIRS.Keys)
                 {
                     _characteristics.Add(characteristic, 0);
                 }
