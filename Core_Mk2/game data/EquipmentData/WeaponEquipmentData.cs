@@ -12,7 +12,7 @@ namespace Core_Mk2
 
         private static void WeaponInit()
         {
-            var currentEquipment = new Equipment(EBodyPart.Weapon, "Древний Эльфийский Меч");
+            var currentEquipment = new Equipment("Древний Эльфийский Меч", EBodyPart.Weapon);
             currentEquipment.Effects.Add(
                 new PassiveParameterModifier.PPMBuilder()
                 .Name("Живучесть.")

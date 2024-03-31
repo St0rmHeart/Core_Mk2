@@ -123,6 +123,26 @@
   <ItemGroup>
     <None Include="Resources\фон-1.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\AirIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EarthIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FireIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoldIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SkullIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\WaterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\XPIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

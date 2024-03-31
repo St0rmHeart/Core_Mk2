@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -108,8 +109,13 @@ namespace Core_Mk2
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(arena));
-            Application.Run(new Form2());
+            //Application.Run(new Form2(arena));
+            //Application.Run(new Form1(arena));
+
+            var f1 = new Form1(arena);
+            var f2 = new Form2(arena);
+            f1.Show();
+            Application.Run(new Form2(arena));
         }
     }
 }

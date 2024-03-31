@@ -13,17 +13,15 @@ namespace Core_Mk2
 {
     public partial class Form2 : Form
     {
-        public Character testHero;
-        public Character testEnemy;
         public Arena arena;
         public TableLayoutPanel StoneGrid;
-        public Image SkullImage = Image.FromFile("D:/Work/GitHub/Core_Mk2/Core_Mk2/Resources/SkullIcon.png");
-        public Image GoldImage = Image.FromFile("D:/Work/GitHub/Core_Mk2/Core_Mk2/Resources/GoldIcon.png");
-        public Image XPImage = Image.FromFile("D:/Work/GitHub/Core_Mk2/Core_Mk2/Resources/XPIcon.png");
-        public Image AirImage = Image.FromFile("D:/Work/GitHub/Core_Mk2/Core_Mk2/Resources/AirIcon.png");
-        public Image FireImage = Image.FromFile("D:/Work/GitHub/Core_Mk2/Core_Mk2/Resources/FireIcon.png");
-        public Image WaterImage = Image.FromFile("D:/Work/GitHub/Core_Mk2/Core_Mk2/Resources/WaterIcon.png");
-        public Image EarthImage = Image.FromFile("D:/Work/GitHub/Core_Mk2/Core_Mk2/Resources/EarthIcon.png");
+        public Image SkullImage = Resources.SkullIcon;
+        public Image GoldImage = Resources.GoldIcon;
+        public Image XPImage = Resources.XPIcon;
+        public Image AirImage = Resources.AirIcon;
+        public Image FireImage = Resources.FireIcon;
+        public Image WaterImage = Resources.WaterIcon;
+        public Image EarthImage = Resources.EarthIcon;
         private TableLayoutPanelCellPosition SelectedStonePosition = new TableLayoutPanelCellPosition(-1, -1);
         //
         private const int GridSize = 8;
@@ -36,97 +34,22 @@ namespace Core_Mk2
         public Form2()
         {
             InitializeComponent();
-
-            var CBuilder = new Character.CBuilder();
-            var PPMBuilder = new PassiveParameterModifier.PPMBuilder();
-            var TPMBuilder = new TriggerParameterModifier.TPMBuilder();
-            var LMEBuilder = new LogicalModuleEffect.LMEBuilder();
-
-
-            var sword = new Equipment(EBodyPart.Weapon, "Древний Эльфийский Меч");
-
-            var newPassiveEffect = PPMBuilder
-                .Name("Живучесть.")
-                .Description("Увеличивает максимальное здоровье на 10.")
-                .ComposeLink(EPlayerType.Self)
-                .ComposeLink(ECharacteristic.Endurance)
-                .ComposeLink(EDerivative.MaxHealth)
-                .ComposeLink(EVariable.C2)
-                .AddLink()
-                .AddValue(10)
-                .BuildWithReset();
-            sword.Effects.Add(newPassiveEffect);
-
-            var newTriggerParameter = TPMBuilder
-                .Name("Наростающая ярость.")
-                .Description(
-                    "При нанесении более 7 едениц физического урона ваша сила увеличиваете на 5% на 2 хода.\n" +
-                    "Может складываться до 4х раз.")
-                .TriggerlogicalModule(new LM_02_damageThreshold(damageType: EDamageType.PhysicalDamage, threshold: 7))
-                .TicklogicalModule(new LM_CONSTANT_TRUE())
-                .Duration(2)
-                .MaxStack(4)
-                .ComposeLink(EPlayerType.Self)
-                .ComposeLink(ECharacteristic.Strength)
-                .ComposeLink(EDerivative.Value)
-                .ComposeLink(EVariable.C1)
-                .AddLink()
-                .AddValue(0.05f)
-                .ComposeTriggerEvent(EPlayerType.Enemy)
-                .ComposeTriggerEvent(EEvent.DamageTaking)
-                .AddTriggerEvent()
-                .ComposeTickEvent(EPlayerType.Self)
-                .ComposeTickEvent(EEvent.StepExecution)
-                .AddTickEventt()
-                .Build();
-            sword.Effects.Add(newTriggerParameter);
-
-            var newLogicalModuleEffect = LMEBuilder
-                .Name("Стена огня")
-                .Description(
-                    "!!ДЛЯ ТЕСТА!! При поглощении маны земли. !!ДЛЯ ТЕСТА!!\n" +
-                    "Теперь урон наносится вашей красной мане. Каждый ход уменьшает запас красной маны на 2." +
-                    "Длится пока красная мана не опустится до нуля.")
-                .TriggerlogicalModule(new LM_01_deltaThreshold(threshold: 0))
-                .TicklogicalModule(new LM_03_manaShieldTickModule(element: ECharacteristic.Fire, costOfMaintenance: 2))
-                .AddTriggerEvent(EPlayerType.Self, EEvent.DeltaEarthMana)
-                .AddTickEventt(EPlayerType.Self, EEvent.DamageAccepting)
-                .AddTickEventt(EPlayerType.Self, EEvent.StepExecution)
-                .Build();
-            sword.Effects.Add(newLogicalModuleEffect);
-
-
-
-            testHero = CBuilder
-                .With_Name("Огн. Рыцарь")
-                .With_XP(1874)
-                .With_Characteristic(ECharacteristic.Strength, 55)
-                .With_Characteristic(ECharacteristic.Dexterity, 40)
-                .With_Characteristic(ECharacteristic.Endurance, 95)
-                .With_Characteristic(ECharacteristic.Fire, 175)
-                .With_Characteristic(ECharacteristic.Water, 5)
-                .With_Characteristic(ECharacteristic.Air, 80)
-                .With_Characteristic(ECharacteristic.Earth, 15)
-                .With_Equipment(sword.BodyPart, sword)
-                .Build();
-
-            CBuilder.Reset();
-
-            testEnemy = CBuilder
-                .With_Name("Тролль")
-                .With_XP(3000)
-                .With_Characteristic(ECharacteristic.Strength, 130)
-                .With_Characteristic(ECharacteristic.Dexterity, 15)
-                .With_Characteristic(ECharacteristic.Endurance, 150)
-                .With_Characteristic(ECharacteristic.Fire, 20)
-                .With_Characteristic(ECharacteristic.Water, 20)
-                .With_Characteristic(ECharacteristic.Air, 15)
-                .With_Characteristic(ECharacteristic.Earth, 60)
-                .Build();
-
-            arena = new Arena(testHero, testEnemy);
             InitializeGrid();
 
+            StoneGrid = new System.Windows.Forms.TableLayoutPanel();
+            StoneGrid.AutoSize = true;
+            StoneGrid.ColumnCount = GridSize;
+            StoneGrid.RowCount = GridSize;
+            StoneGrid.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            StoneGrid.Location = new System.Drawing.Point(10, 10);
+            StoneGrid.Show();
+            Controls.Add(StoneGrid);
+        }
+        public Form2(Arena arena1)
+        {
+            InitializeComponent();
+            InitializeGrid();
+            arena = arena1;
             StoneGrid = new System.Windows.Forms.TableLayoutPanel();
             StoneGrid.AutoSize = true;
             StoneGrid.ColumnCount = GridSize;
@@ -285,7 +208,7 @@ namespace Core_Mk2
                         SwapStones(CurrentStonePosition.Column, CurrentStonePosition.Row, SelectedStonePosition.Column, SelectedStonePosition.Row);
                         SelectedStonePosition.Column = -1; SelectedStonePosition.Row = -1;
                     }
-                StoneGrid.GetControlFromPosition(SelectedStonePosition.Column, SelectedStonePosition.Row).BackColor = Color.Transparent;
+                //StoneGrid.GetControlFromPosition(SelectedStonePosition.Column, SelectedStonePosition.Row).BackColor = Color.Transparent;
             }
             UpdateGrid();
             timer1.Start();
