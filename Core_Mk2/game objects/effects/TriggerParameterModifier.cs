@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Core_Mk2
 {
@@ -25,14 +26,14 @@ namespace Core_Mk2
         {
             Name = name;
             Description = description;
-            _values = new List<double>(values);
-            _triggerlogicalModule = triggerlogicalModule.Clone();
-            _ticklogicalModule = ticklogicalModule.Clone();
+            _values = values;
+            _triggerlogicalModule = triggerlogicalModule;
+            _ticklogicalModule = ticklogicalModule;
             _duration = duration;
             _maxStack = maxStack;
-            _links = new List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)>(links);
-            _triggerEvents = new List<(EPlayerType target, EEvent type)>(triggerEvents);
-            _tickEvents = new List<(EPlayerType target, EEvent type)>(tickEvents);
+            _links = links;
+            _triggerEvents = triggerEvents;
+            _tickEvents = tickEvents;
         }
 
         public string Name { get; private set; }
@@ -205,9 +206,9 @@ namespace Core_Mk2
                 ticklogicalModule: _ticklogicalModule.Clone(),
                 duration: _duration,
                 maxStack: _maxStack,
-                links: _links,
-                triggerEvents: _triggerEvents,
-                tickEvents: _tickEvents);
+                links: new List<(EPlayerType, ECharacteristic, EDerivative, EVariable)>(_links),
+                triggerEvents: new List<(EPlayerType, EEvent)>(_triggerEvents),
+                tickEvents: new List<(EPlayerType, EEvent)>(_tickEvents));
         }
 
 
@@ -229,7 +230,7 @@ namespace Core_Mk2
             private List<(EPlayerType target, EEvent type)> _tickEvents = new List<(EPlayerType target, EEvent type)>();
             private EPlayerType _targetTickEvent;
             private EEvent _eventTypeTickEvent;
-            private List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> _links = new List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)>();
+            private List<(EPlayerType target, ECharacteristic characteristic, EDerivative derivative, EVariable variable)> _links = new List<(EPlayerType, ECharacteristic, EDerivative, EVariable)>();
             private EPlayerType _targetLink;
             private ECharacteristic _characteristicLink;
             private EDerivative _derivativeLink;
@@ -239,7 +240,6 @@ namespace Core_Mk2
             {
                 Reset();
             }
-
             public void Reset()
             {
                 _name = null;
@@ -326,7 +326,7 @@ namespace Core_Mk2
                 {
                     throw new ArgumentException("Параметр " + nameof(_characteristicLink) + " " + nameof(_derivativeLink) + " обязан иметь указание на переменную.");
                 }
-                if (!CONSTANT_DATA.CHAR_DER_PAIRS[_characteristicLink].Contains(_derivativeLink))
+                if (!CONSTANT.CHAR_DER_PAIRS[_characteristicLink].Contains(_derivativeLink))
                 {
                     throw new ArgumentException("У " + nameof(_characteristicLink) + " нет производной " + nameof(_derivativeLink) + ".");
                 }
@@ -347,7 +347,7 @@ namespace Core_Mk2
                 {
                     throw new ArgumentException("Параметр " + nameof(characteristic) + " " + nameof(derivative) + " обязан иметь указание на переменную.");
                 }
-                if (!CONSTANT_DATA.CHAR_DER_PAIRS[characteristic].Contains(derivative))
+                if (!CONSTANT.CHAR_DER_PAIRS[characteristic].Contains(derivative))
                 {
                     throw new ArgumentException("У " + nameof(characteristic) + " нет производной " + nameof(derivative) + ".");
                 }
@@ -448,14 +448,14 @@ namespace Core_Mk2
                 return new TriggerParameterModifier(
                 name: _name,
                 description: _description,
-                values: values,
-                triggerlogicalModule: _triggerlogicalModule,
-                ticklogicalModule: _ticklogicalModule,
+                values: new List<double>(values),
+                triggerlogicalModule: _triggerlogicalModule.Clone(),
+                ticklogicalModule: _ticklogicalModule.Clone(),
                 duration: _duration,
                 maxStack: _maxStack,
-                links: _links,
-                triggerEvents: _triggerEvents,
-                tickEvents: _tickEvents);
+                links: new List<(EPlayerType, ECharacteristic, EDerivative, EVariable)>(_links),
+                triggerEvents: new List<(EPlayerType, EEvent)>(_triggerEvents),
+                tickEvents: new List<(EPlayerType, EEvent)>(_tickEvents));
             }
         }
     }

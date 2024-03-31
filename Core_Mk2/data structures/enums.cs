@@ -101,8 +101,9 @@ namespace Core_Mk2
         MaxHealth,      //максимальный запас здоровья
         CurrentHealth,  //текущий(стартовый) запас здоровья
     }
-    public static class CONSTANT_DATA
+    public static class CONSTANT
     {
+
         public static readonly int ACCURACY_OF_CALCULATIONS = 4;
 
         public static double Round(this double value)

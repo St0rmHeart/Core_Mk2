@@ -78,6 +78,17 @@
     <Compile Include="game objects\effects\TriggerParameterModifier.cs" />
     <Compile Include="game objects\effects\PassiveParameterModifier.cs" />
     <Compile Include="game objects\Equipment.cs" />
+    <Compile Include="game data\EffectsData\EffectDataMain.cs" />
+    <Compile Include="game data\EffectsData\LMEData.cs" />
+    <Compile Include="game data\EffectsData\PPMData.cs" />
+    <Compile Include="game data\EffectsData\TPMData.cs" />
+    <Compile Include="game data\EquipmentData\BodyEquipmentData.cs" />
+    <Compile Include="game data\EquipmentData\EquipmentData.cs" />
+    <Compile Include="game data\EquipmentData\ExtraEquipmentData.cs" />
+    <Compile Include="game data\EquipmentData\FeetEquipmentData.cs" />
+    <Compile Include="game data\EquipmentData\HandsEquipmentData.cs" />
+    <Compile Include="game data\EquipmentData\HeadEquipmentData.cs" />
+    <Compile Include="game data\EquipmentData\WeaponEquipmentData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
