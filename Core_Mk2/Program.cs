@@ -39,7 +39,7 @@ namespace Core_Mk2
             var newTriggerParameter = TPMBuilder
                 .Name("Наростающая ярость.")
                 .Description(
-                    "При нанесении более 7 едениц физического урона ваша сила увеличиваете на 5% на 2 хода.\n" +
+                    "При нанесении более 7 едениц физического урона ваша сила увеличивается на 5% на 2 хода.\n" +
                     "Может складываться до 4х раз.")
                 .TriggerlogicalModule(new LM_02_damageThreshold(damageType: EDamageType.PhysicalDamage, threshold: 7))
                 .TicklogicalModule(new LM_CONSTANT_TRUE())
@@ -60,7 +60,7 @@ namespace Core_Mk2
                 .Build();
             sword.Effects.Add(newTriggerParameter);
 
-            var newLogicalModuleEffect = LMEBuilder
+            /*var newLogicalModuleEffect = LMEBuilder
                 .Name("Стена огня")
                 .Description(
                     "!!ДЛЯ ТЕСТА!! При поглощении маны земли. !!ДЛЯ ТЕСТА!!\n" +
@@ -72,14 +72,14 @@ namespace Core_Mk2
                 .AddTickEventt(EPlayerType.Self, EEvent.DamageAccepting)
                 .AddTickEventt(EPlayerType.Self, EEvent.StepExecution)
                 .Build();
-            sword.Effects.Add(newLogicalModuleEffect);
+            sword.Effects.Add(newLogicalModuleEffect);*/
 
 
 
             var testHero = CBuilder
                 .With_Name("Огн. Рыцарь")
                 .With_XP(1874)
-                .With_Characteristic(ECharacteristic.Strength, 55)
+                .With_Characteristic(ECharacteristic.Strength, 155)
                 .With_Characteristic(ECharacteristic.Dexterity, 40)
                 .With_Characteristic(ECharacteristic.Endurance, 95)
                 .With_Characteristic(ECharacteristic.Fire, 175)
