@@ -72,7 +72,6 @@ namespace Core_Mk2
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.StartButton = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.activePlayer = new System.Windows.Forms.Label();
             this.HeroPanel.SuspendLayout();
             this.EnemyPanel.SuspendLayout();
             this.SuspendLayout();
@@ -576,15 +575,6 @@ namespace Core_Mk2
             this.listBox1.Size = new System.Drawing.Size(456, 650);
             this.listBox1.TabIndex = 6;
             // 
-            // activePlayer
-            // 
-            this.activePlayer.AutoSize = true;
-            this.activePlayer.Location = new System.Drawing.Point(872, 45);
-            this.activePlayer.Name = "activePlayer";
-            this.activePlayer.Size = new System.Drawing.Size(35, 13);
-            this.activePlayer.TabIndex = 7;
-            this.activePlayer.Text = "label1";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -592,7 +582,6 @@ namespace Core_Mk2
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::Core_Mk2.Properties.Resources.фон_1;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
-            this.Controls.Add(this.activePlayer);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.textBox1);
@@ -656,7 +645,6 @@ namespace Core_Mk2
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Label activePlayer;
     }
 }
 

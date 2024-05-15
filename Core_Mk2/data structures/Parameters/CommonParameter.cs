@@ -22,7 +22,7 @@ namespace Core_Mk2
         {
             _moduleA0 = CalculatorA0.GetModule(characteristic, derivative, derivativeValueValues);
             //получение списка всех ValueParameter, на которые нужно подписаться
-            var subscriptionsList = CONSTANT_DATA.DERIVATIVE_SUBSCRIPTIONS[characteristic][derivative];
+            var subscriptionsList = CONSTANT.DERIVATIVE_SUBSCRIPTIONS[characteristic][derivative];
             foreach (var subscription in subscriptionsList)
             {
                 derivativeValueValues[subscription].ValueDerivativeUpdate += UpdateA0;

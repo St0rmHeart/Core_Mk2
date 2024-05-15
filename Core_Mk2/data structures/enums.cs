@@ -57,7 +57,6 @@ namespace Core_Mk2
         WaterStone = ECharacteristic.Water,
         AirStone = ECharacteristic.Air,
         EarthStone = ECharacteristic.Earth,
-
     }
     /// <summary>
     /// Указатели для адресации к игроку или противнику игрока
@@ -101,8 +100,9 @@ namespace Core_Mk2
         MaxHealth,      //максимальный запас здоровья
         CurrentHealth,  //текущий(стартовый) запас здоровья
     }
-    public static class CONSTANT_DATA
+    public static class CONSTANT
     {
+
         public static readonly int ACCURACY_OF_CALCULATIONS = 4;
 
         public static double Round(this double value)

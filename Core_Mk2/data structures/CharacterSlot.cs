@@ -14,7 +14,7 @@ namespace Core_Mk2
     {
         #region STATIC
         //Бонусны за совмещение 3/4/5 камней одного типа в ряд
-        private static readonly double[] combinationMultiplier = { 1.0f, 1.3f, 1.8f };
+        private static readonly double[] combinationMultiplier = { 1.0f, 1.0f, 1.0f };
         #endregion
 
         #region EVENT

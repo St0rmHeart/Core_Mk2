@@ -18,13 +18,12 @@ namespace Core_Mk2
         private CharacterSlot _activePlayer;
         //
         private CharacterSlot _passivePlayer;
-
-
-
+        
         //
         private TurnSwitch _isTurnEnd = new TurnSwitch();
         //
         private DamageModule _damageModule = new DamageModule();
+
 
         #endregion
 
@@ -67,13 +66,13 @@ namespace Core_Mk2
             }
             foreach (CharacterSlot characterSlot in initArray)
             {
-                foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+                foreach (ECharacteristic characteristic in CONSTANT.CHAR_DER_PAIRS.Keys)
                 {
                     characterSlot.Data[characteristic][EDerivative.Value].SetFinalValue();
                 }
-                foreach (ECharacteristic characteristic in CONSTANT_DATA.CHAR_DER_PAIRS.Keys)
+                foreach (ECharacteristic characteristic in CONSTANT.CHAR_DER_PAIRS.Keys)
                 {
-                    foreach (EDerivative derivative in CONSTANT_DATA.CHAR_DER_PAIRS[characteristic])
+                    foreach (EDerivative derivative in CONSTANT.CHAR_DER_PAIRS[characteristic])
                     {
                         (characterSlot.Data[characteristic][derivative] as CommonParameter)?.UpdateA0();
                     }
